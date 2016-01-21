@@ -1,0 +1,17 @@
+{
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Run Flask Project",
+			"selector": "source.python",
+			"shell_cmd": "/Users/stefan/Documents/python/venvs/brewbase/bin/python3.4 -u \"$project_path/run.py\""
+		}
+	],
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	]
+}
