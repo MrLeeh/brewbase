@@ -1,4 +1,6 @@
 flask
 flask-script
 flask-sqlalchemy
+sqlalchemy-migrate
+numpy
 WTForms

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% from "navbar.html" import mynavbar %}
+{% from "common.html" import edit_field, decimal_field %}
+{% block title %}Erstelle ein neues Braurezept{% endblock %}
+
+{% block scripts %}
+<link href="/static/css/bootstrap-datepicker.css"></link>
+<script src="/static/js/bootstrap-datepicker.js"></script>
+<script src="/static/locales/bootstrap-datepicker.de.min.js"></script>
+<script>
+  $(function() {
+    $('.input-group.date').datepicker({
+      format: "dd.mm.yyyy",
+      weekStart: 1,
+      language: "de",
+      autoclose: true,
+      todayBtn: "linked"
+    });
+  });
+</script>
+{% endblock %}
+
+{% block navbar %}
+  {{ mynavbar() }}
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid well col-sm-8 col-sm-offset-2">
+    <legend>Erstelle eine neues Braurezept</legend>
+    <form class="form-horizontal" method="post">
+      <div class="form-group">
+        <label class="control-label col-sm-4">Datum:</label>
+        <div class="col-sm-6">
+          <div class="input-group date">
+            <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+        </div>
+      </div>
+      {{ edit_field(form.name) }}
+
+      <!-- Beertype -->
+      <div class="form-group">
+        <label class="control-label col-sm-4">Biersorte:</label>
+        <div class="col-sm-6">
+          <select name="number" class="form-control" id="number">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          </select>
+        </div>
+      </div>
+
+      {{ decimal_field(form.original_gravity, suffix='°Pl') }}
+      {{ decimal_field(form.alcohol, suffix='%') }}
+      {{ decimal_field(form.bitterness, suffix='IBU') }}
+      {{ decimal_field(form.color, suffix='EBC') }}
+      {{ decimal_field(form.carbonisation, suffix='g/l') }}
+
+      <div class="form-actions">
+        <button type="submit" class="btn">Save</button>
+        or <a href="#">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

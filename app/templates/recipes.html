@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "navbar.html" import mynavbar %}
+{% from "common.html" import detail %}
 {% block title %}This is an example page{% endblock %}
 
 {% block navbar %}
@@ -7,4 +8,12 @@
 {% endblock %}
 
 {% block content %}
+
+    {% for recipe in recipes %}
+      <div class="row">
+        {{ detail(recipe, link_title=False) }}
+      </div>
+    {% endfor %}
+
+
 {% endblock %}

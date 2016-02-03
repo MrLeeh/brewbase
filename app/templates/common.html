@@ -1,0 +1,97 @@
+
+{% macro edit_field(field) %}
+  <div class="form-group{% if field.errors %} error{% endif %}">
+    {{ field.label(class="control-label col-sm-4") }}
+    <div class="col-sm-6">
+      {{ field(class="form-control", **kwargs) }}
+      {% for error in field.errors %}
+       <span class="help-inline">{{ error }}</span>
+      {% endfor %}
+    </div>
+  </div>
+{% endmacro %}
+
+
+{% macro decimal_field(field, suffix=None, readonly=False, submit_btn=False) %}
+  <div class="form-group {% if field.errors %} error{% endif %}">
+    {{ field.label(class="control-label col-sm-4") }}
+    <div class="col-sm-5">
+      <div class="input-group">
+        {{ field(class="form-control", type="number", readonly=readonly, **kwargs) }}
+        {% if suffix %}
+          <div class="input-group-addon" style="width:60px">{{ suffix }}</div>
+        {% endif %}
+        {% if submit_btn %}
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+          </span>
+        {% endif %}
+
+      </div>
+      {% for error in field.errors %}
+       <span class="help-inline">{{ error }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endmacro %}
+
+{% macro detail(
+  recipe, link_title=False, show_edit=True, show_decription=True) %}
+
+  <div class="recipe-detail well col-sm-offset-2 col-sm-8">
+    <h3>
+      {% if link_title %}
+        <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
+          {{ recipe.name }}
+        </a>
+      {% else %}
+        {{ recipe.name }}
+      {% endif %}
+      ({{ recipe.date }})
+    </h3>
+
+    <div class="col-sm-8">
+      <table class="table">
+        <tr>
+          <td>Biersorte</td>
+          <td>{{ recipe.beertype }}</td>
+        </tr>
+        <tr>
+          <td>Stammwürze</td>
+          <td>{{ recipe.original_gravity }} °Pl</td>
+        </tr>
+        <tr>
+          <td>Alkoholgehalt</td>
+          <td>{{ recipe.alcohol }} %<sub>vol</sub></td>
+        </tr>
+        <tr>
+          <td>Bitterkeit</td>
+          <td>{{ recipe.bitterness }} IBU</td>
+        </tr>
+        <tr>
+          <td>Farbe</td>
+          <td>{{ recipe.color }} EBC</td>
+        </tr>
+        <tr>
+          <td>Karbonisierung</td>
+          <td>{{ recipe.carbonisation }} g/l</td>
+        </tr>
+      </table>
+    </div>
+
+
+    {% if show_edit %}
+      <div class="edit-controls">
+        <i class="icon-pencil"></i>
+        <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">Edit</a>
+        <span class="inline-pad"></span>
+        <i class="icon-trash"></i>
+        <a class="recipe-delete-link" href="#"
+          data-delete-url="{{ url_for('delete_recipe', recipe_id=recipe.id) }}">Delete</a>
+      </div>
+    {% endif %}
+
+  </div>
+
+{% endmacro %}
