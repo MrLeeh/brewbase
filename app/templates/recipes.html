@@ -3,17 +3,82 @@
 {% from "common.html" import detail %}
 {% block title %}This is an example page{% endblock %}
 
+{% block scripts %}
+
+  <script>
+    $(document).ready(function() {
+
+      $('.recipe-delete-btn').click(function() {
+        var delete_url = $(this).attr('data-delete-url');
+        $.ajax({
+          url: delete_url,
+          type: 'DELETE',
+          success: function(response) {
+            if (response.status == 'OK') {
+              window.location = {{ url_for('recipe_list') }};
+            } else {
+              alert('Delete failed.')
+            }
+          }
+        });
+      });
+
+      $('#myModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var recipe_name = button.data('recipe-name');
+        var url = button.data('delete-url');
+        var modal = $(this);
+
+        modal.find('#myModalBody').text(
+          "Soll das Rezept \"" + recipe_name + "\" gelöscht werden?"
+        );
+
+        modal.find('#modalOk').attr("data-delete-url", url);
+
+      });
+    });
+  </script>
+
+{% endblock %}
+
 {% block navbar %}
-{{ mynavbar() }}
+  {{ mynavbar() }}
 {% endblock %}
 
 {% block content %}
 
-    {% for recipe in recipes %}
-      <div class="row">
+  {% for recipe in recipes %}
+    <div class="row">
+      <div class="recipe-detail well col-sm-offset-2 col-sm-8">
         {{ detail(recipe, link_title=False) }}
+        <div class="edit-controls">
+        <i class="icon-pencil"></i>
+        <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">Edit</a>
+        <span class="inline-pad"></span>
+        <i class="icon-trash"></i>
+        <a class="recipe-delete-link" href="#"
+         data-toggle="modal" data-target="#myModal" data-recipe-name="{{ recipe.name }}" data-delete-url="{{ url_for('delete_recipe', recipe_id=recipe.id) }}">Delete</a>
+        </div>
       </div>
-    {% endfor %}
+    </div>
 
+  {% endfor %}
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Rezept löschen</h4>
+        </div>
+        <div class="modal-body" id="myModalBody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button id="modalOk" type="button" class="btn btn-primary recipe-delete-btn">Ok</button>
+        </div>
+      </div>
+    </div>
+</div>
 
 {% endblock %}

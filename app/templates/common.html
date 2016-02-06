@@ -39,7 +39,6 @@
 {% macro detail(
   recipe, link_title=False, show_edit=True, show_decription=True) %}
 
-  <div class="recipe-detail well col-sm-offset-2 col-sm-8">
     <h3>
       {% if link_title %}
         <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
@@ -80,18 +79,5 @@
       </table>
     </div>
 
-
-    {% if show_edit %}
-      <div class="edit-controls">
-        <i class="icon-pencil"></i>
-        <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">Edit</a>
-        <span class="inline-pad"></span>
-        <i class="icon-trash"></i>
-        <a class="recipe-delete-link" href="#"
-          data-delete-url="{{ url_for('delete_recipe', recipe_id=recipe.id) }}">Delete</a>
-      </div>
-    {% endif %}
-
-  </div>
 
 {% endmacro %}
