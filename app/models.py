@@ -5,7 +5,7 @@ copyright (c) 2016 by Stefan Lehmann,
 licensed under the MIT license
 
 """
-from sqlalchemy import Column, String, Integer, Float, Date, func
+from sqlalchemy import Column, String, Integer, Float, Date, func, Text
 from app import db
 
 
@@ -14,6 +14,7 @@ class Recipe(db.Model):
 
     id = Column(Integer, primary_key=True)
     date = Column(Date, default=func.now())
+    description = Column(String)
     name = Column(String(255), default='')
     beertype = Column(String(255), default='')
     original_gravity = Column(Float(precision=1))

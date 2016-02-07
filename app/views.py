@@ -32,7 +32,7 @@ def create_recipe():
 
         return redirect(url_for('recipe_list'))
 
-    return render_template('edit_recipe.html', form=form)
+    return render_template('recipe/edit.html', form=form)
 
 
 @app.route('/recipes/<int:recipe_id>/edit/', methods=['GET', 'POST'])
@@ -45,7 +45,7 @@ def edit_recipe(recipe_id):
         form.populate_obj(recipe)
         db.session.commit()
         return redirect(url_for('recipe_list'))
-    return render_template('edit_recipe.html', form=form)
+    return render_template('recipe/edit.html', form=form)
 
 
 @app.route('/recipes/<int:recipe_id>/delete/', methods=['DELETE'])
