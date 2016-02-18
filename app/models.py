@@ -5,7 +5,9 @@ copyright (c) 2016 by Stefan Lehmann,
 licensed under the MIT license
 
 """
-from sqlalchemy import Column, String, Integer, Float, Date, func, Text
+from sqlalchemy import Column, String, Integer, Float, Date, func, Text, \
+    ForeignKey
+from sqlalchemy.orm import relationship, backref
 from app import db
 
 
@@ -28,3 +30,24 @@ class Recipe(db.Model):
             '< Recipe object id={self.id} name={self.name}'
             .format(self=self)
         )
+
+
+class RecipeHop(db.Model):
+    __tablename__ = 'recipe_hops'
+
+    id = Column(Integer, primary_key=True)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'))
+    recipe = relationship('Recipe', backref=backref('hops', order_by=id))
+    name_ = Column(String(80))
+    qty = Column(Integer)
+    comment = Column(Text)
+
+
+class RecipeMalt(db.Model):
+    __tablename__ = 'recipe_malts'
+    id = Column(Integer, primary_key=True)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'))
+    recipe = relationship('Recipe', backref=backref('malts', order_by=id))
+    name_ = Column(String(80))
+    qty = Column(Float(precision=1))
+    comment = Column(Text)

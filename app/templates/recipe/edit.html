@@ -1,6 +1,39 @@
 {% extends "base.html" %}
 {% from "navbar.html" import mynavbar %}
-{% from "common.html" import edit_field, decimal_field %}
+{% from "common.html" import edit_field, decimal_field, malt_data %}
+
+{% macro ingredient_list(name, label, items, qty_unit) %}
+  <div class="panel panel-default">
+    <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ name }}">
+      <h4 class="panel-title">
+        <a href="#">{{ label }}<span class="caret"></span></a>
+        <a href="#" class="add-{{ name }}"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+      </h4>
+    </div>
+    <div id="collapse-{{ name }}" class="panel-collapse collapse">
+      <div class="panel-body {{ name }}-body">
+        {% for item in items %}
+          <div class="col-sm-12 {{ name }}-div" id="{{ name }}-{{ loop.index0 }}">
+            <div class="form-horizontal">
+              <div class="form-group">
+                <div class="col-sm-6">
+                  {{ item.name_(class="form-control") }}
+                </div>
+                <div class="col-sm-2">
+                  <div class="input-group">
+                    {{ item.qty(class="form-control") }}
+                    <div class="input-group-addon" style="width:30px">{{ qty_unit }}</div>
+                  </div>
+                </div>
+                <a class="btn btn-link del-{{ name }}" id="del-{{ name }}-{{ loop.index0 }}"><span class="glyphicon glyphicon-trash"></span></a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endmacro %}
 
 {% block navbar %}
   {{ mynavbar() }}
@@ -8,14 +41,73 @@
 
 {% block extra_head %}
   <style>
+
     .tab-content {
       margin-top: 16px;
     };
+
   </style>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+
+      // add malt
+      $('a.add-malt').click(function(event) {
+        var last_div = ($('.malt-div')).last()
+        new_div = last_div.clone(true, true).appendTo('.malt-body')
+        new_num = parseInt(new_div.attr('id').match(/\d+/)) + 1
+
+        new_div.attr('id', "malt-" + new_num);
+        new_div.find("input[id*='name_']").attr('id', 'malts-' + new_num + '-name_')
+        new_div.find("input[id*='name_']").attr('name', 'malts-' + new_num + '-name_')
+        new_div.find("input[id*='qty']").attr('id', 'malts-' + new_num + '-qty')
+        new_div.find("input[id*='qty']").attr('name', 'malts-' + new_num + '-qty')
+
+        event.stopPropagation();
+      });
+
+      // remove malt
+      $('.del-malt').click(function() {
+          if ($('.malt-div').length > 1) {
+              var thisRow = $(this).closest(".malt-div");
+              thisRow.remove();
+          }
+      }); //End remove row
+
+
+      // add hop
+      $('a.add-hop').click(function(event) {
+        var last_div = ($('.hop-div')).last()
+        new_div = last_div.clone(true, true).appendTo('.hop-body')
+        new_num = parseInt(new_div.attr('id').match(/\d+/)) + 1
+
+        new_div.attr('id', "hop-" + new_num);
+        new_div.find("input[id*='name_']").attr('id', 'hops-' + new_num + '-name_')
+        new_div.find("input[id*='name_']").attr('name', 'hops-' + new_num + '-name_')
+        new_div.find("input[id*='qty']").attr('id', 'hops-' + new_num + '-qty')
+        new_div.find("input[id*='qty']").attr('name', 'hops-' + new_num + '-qty')
+
+        event.stopPropagation();
+      });
+
+      // remove malt
+      $('.del-hop').click(function() {
+          if ($('.hop-div').length > 1) {
+              var thisRow = $(this).closest(".hop-div");
+              thisRow.remove();
+          }
+      }); //End remove row
+    });
+
+  </script>
 {% endblock %}
 
 {% block content %}
   <form class="form-horizontal" method="post">
+    {{ form.csrf_token }}
     <div class="container-fluid col-sm-8 col-sm-offset-2">
       <div class="row">
           {{ edit_field(form.name) }}
@@ -52,44 +144,17 @@
 
         <div id="recipe-ingredients" class="tab-pane fade in inactive">
           <div class="row">
-
            <div class="panel-group">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" href="#collapse1">Malz<span class="caret"></span></a>
-                </h4>
-              </div>
-              <div id="collapse1" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <ul>
-                    <li>Pilsener Malz</li>
-                    <li>Wiener Malz</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+
+            {{ ingredient_list('malt', 'Malz', form.malts, 'kg') }}
+
+            {{ ingredient_list('hop', 'Hopfen', form.hops, 'g')}}
 
             <div class="panel panel-default">
-              <div class="panel-heading">
+              <div class="panel-heading" data-toggle="collapse" href="#collapse3">
                 <h4 class="panel-title">
-                  <a data-toggle="collapse" href="#collapse2">Hopfen<span class="caret"></span></a>
-                </h4>
-              </div>
-              <div id="collapse2" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <ul>
-                    <li>Tettnanger 15g</li>
-                    <li>Magnum 10g</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" href="#collapse3">Sonstige Zutaten<span class="caret"></span></a>
+                  <a href="#">Sonstige Zutaten<span class="caret"></span></a>
+                  <a href="#" class="add-btn add-misc"><span class="glyphicon glyphicon-plus pull-right"></span></a>
                 </h4>
               </div>
               <div id="collapse3" class="panel-collapse collapse">
@@ -109,9 +174,18 @@
         <hr class="divider"/>
         <div class="form-actions">
             <button type="submit" class="btn">Speichern</button>
-            or <a href="{{ url_for('recipe_list') }}">Abbrechen</a>
+            oder <a href="{{ url_for('recipe_list') }}">Abbrechen</a>
         </div>
       </div>
     </div>
   </form>
+  {% if form.errors %}
+    <ul class="errors">
+        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+            {% for error in field_errors %}
+                <li>{{ form[field_name].label }}: {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+{% endif %}
 {% endblock %}

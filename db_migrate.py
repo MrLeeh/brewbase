@@ -10,7 +10,7 @@ version = api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
 migration = SQLALCHEMY_MIGRATE_REPO + ('/versions/%03d_migration.py' % (version + 1))
 
 
-if '--make-script' in sys.argv:
+if not '--skip-script' in sys.argv:
     tmp_module = imp.new_module('old_model')
     old_model = api.create_model(SQLALCHEMY_DATABASE_URI,
                                  SQLALCHEMY_MIGRATE_REPO)

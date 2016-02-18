@@ -72,6 +72,21 @@
         </tr>
       </table>
     </div>
+{% endmacro %}
 
+{% macro malt_data(i, malt) %}
+   <div class="form-group">
+      <div class="col-sm-8">
+        {% if i==0 %}<label>Name</label>{% endif %}
+        <input type="text" class="form-control" value="{{ malt.name }}"></input>
+      </div>
 
+      <div class="col-sm-2">
+        {% if i==0 %}<label for="menge1">Menge</label>{% endif %}
+        <div class="input-group">
+          <input id="xmenge1" type="text" class="form-control" value="{{ malt.qty }}"></input>
+          <div class="input-group-addon" style="width:30px">kg</div>
+        </div>
+      </div>
+    </div>
 {% endmacro %}
