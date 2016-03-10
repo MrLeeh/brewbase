@@ -39,7 +39,7 @@ class RecipeHop(db.Model):
     recipe_id = Column(Integer, ForeignKey('recipes.id'))
     recipe = relationship('Recipe', backref=backref('hops', order_by=id))
     name_ = Column(String(80))
-    qty = Column(Integer)
+    qty = Column(Float(precision=0))
     comment = Column(Text)
 
 
@@ -50,4 +50,14 @@ class RecipeMalt(db.Model):
     recipe = relationship('Recipe', backref=backref('malts', order_by=id))
     name_ = Column(String(80))
     qty = Column(Float(precision=1))
+    comment = Column(Text)
+
+
+class RecipeMisc(db.Model):
+    __tablename__ = 'recipe_miscs'
+    id = Column(Integer, primary_key=True)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'))
+    recipe = relationship('Recipe', backref=backref('miscs', order_by=id))
+    name_ = Column(String(80))
+    qty = Column(Float(precision=0))
     comment = Column(Text)

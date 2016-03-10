@@ -7,7 +7,7 @@
     <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ name }}">
       <h4 class="panel-title">
         <a href="#">{{ label }}<span class="caret"></span></a>
-        <a href="#" class="add-{{ name }}"><span class="glyphicon glyphicon-plus pull-right"></span></a>
+        <a href="#" class="add-{{ name }}" data-target="{{ name }}"><span class="glyphicon glyphicon-plus pull-right"></span></a>
       </h4>
     </div>
     <div id="collapse-{{ name }}" class="panel-collapse collapse">
@@ -50,59 +50,7 @@
 {% endblock %}
 
 {% block scripts %}
-  <script type="text/javascript">
-
-    $(document).ready(function() {
-
-      // add malt
-      $('a.add-malt').click(function(event) {
-        var last_div = ($('.malt-div')).last()
-        new_div = last_div.clone(true, true).appendTo('.malt-body')
-        new_num = parseInt(new_div.attr('id').match(/\d+/)) + 1
-
-        new_div.attr('id', "malt-" + new_num);
-        new_div.find("input[id*='name_']").attr('id', 'malts-' + new_num + '-name_')
-        new_div.find("input[id*='name_']").attr('name', 'malts-' + new_num + '-name_')
-        new_div.find("input[id*='qty']").attr('id', 'malts-' + new_num + '-qty')
-        new_div.find("input[id*='qty']").attr('name', 'malts-' + new_num + '-qty')
-
-        event.stopPropagation();
-      });
-
-      // remove malt
-      $('.del-malt').click(function() {
-          if ($('.malt-div').length > 1) {
-              var thisRow = $(this).closest(".malt-div");
-              thisRow.remove();
-          }
-      }); //End remove row
-
-
-      // add hop
-      $('a.add-hop').click(function(event) {
-        var last_div = ($('.hop-div')).last()
-        new_div = last_div.clone(true, true).appendTo('.hop-body')
-        new_num = parseInt(new_div.attr('id').match(/\d+/)) + 1
-
-        new_div.attr('id', "hop-" + new_num);
-        new_div.find("input[id*='name_']").attr('id', 'hops-' + new_num + '-name_')
-        new_div.find("input[id*='name_']").attr('name', 'hops-' + new_num + '-name_')
-        new_div.find("input[id*='qty']").attr('id', 'hops-' + new_num + '-qty')
-        new_div.find("input[id*='qty']").attr('name', 'hops-' + new_num + '-qty')
-
-        event.stopPropagation();
-      });
-
-      // remove malt
-      $('.del-hop').click(function() {
-          if ($('.hop-div').length > 1) {
-              var thisRow = $(this).closest(".hop-div");
-              thisRow.remove();
-          }
-      }); //End remove row
-    });
-
-  </script>
+  <script type="text/javascript" src="/static/js/recipe_edit.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -123,7 +71,6 @@
       </div>
 
       <div class="tab-content">
-
         <div id="recipe-datasheet" class="tab-pane fade in active">
           <div class="row">
             <div class="col-sm-5">
@@ -150,24 +97,9 @@
 
             {{ ingredient_list('hop', 'Hopfen', form.hops, 'g')}}
 
-            <div class="panel panel-default">
-              <div class="panel-heading" data-toggle="collapse" href="#collapse3">
-                <h4 class="panel-title">
-                  <a href="#">Sonstige Zutaten<span class="caret"></span></a>
-                  <a href="#" class="add-btn add-misc"><span class="glyphicon glyphicon-plus pull-right"></span></a>
-                </h4>
-              </div>
-              <div id="collapse3" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <ul>
-                    <li>Pilsener Malz</li>
-                    <li>Wiener Malz</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+            {{ ingredient_list('misc', 'Sonstige Zutaten', form.miscs, 'g')}}
 
+          </div>
         </div>
       </div>
       <div class="row">
@@ -187,5 +119,5 @@
             {% endfor %}
         {% endfor %}
     </ul>
-{% endif %}
+  {% endif %}
 {% endblock %}

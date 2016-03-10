@@ -5,13 +5,13 @@ copyright (c) 2016 by Stefan Lehmann,
 licensed under the MIT license
 
 """
-from .models import RecipeMalt, RecipeHop
+from .models import RecipeMalt, RecipeHop, RecipeMisc
 from flask.ext.wtf import Form
 from wtforms import FieldList
 from wtforms import Form as NoCsrfForm
 from wtforms.fields import TextField, DecimalField, IntegerField, \
     TextAreaField, FormField
-from wtforms.validators import Length, Required
+from wtforms.validators import Length
 
 
 class MaltForm(NoCsrfForm):
@@ -22,7 +22,13 @@ class MaltForm(NoCsrfForm):
 
 class HopForm(NoCsrfForm):
     name_ = TextField('Name:', [Length(max=80)])
-    qty = IntegerField('Menge:')
+    qty = DecimalField('Menge:', places=0)
+    comment = TextAreaField('Bemerkungen:')
+
+
+class MiscForm(NoCsrfForm):
+    name_ = TextField('Name:', [Length(max=80)])
+    qty = DecimalField('Menge:', places=0)
     comment = TextAreaField('Bemerkungen:')
 
 
@@ -38,3 +44,4 @@ class RecipeForm(Form):
     carbonisation = DecimalField('Karbonisierung:', places=1)
     malts = FieldList(FormField(MaltForm, default=lambda: RecipeMalt()))
     hops = FieldList(FormField(HopForm, default=lambda: RecipeHop()))
+    miscs = FieldList(FormField(MiscForm, default=lambda: RecipeMisc()))

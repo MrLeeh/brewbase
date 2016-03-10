@@ -70,6 +70,18 @@
           <td>Karbonisierung</td>
           <td>{{ recipe.carbonisation }} g/l</td>
         </tr>
+        <tr>
+          <td>Malz</td>
+          <td>{{ recipe.malts|join(', ', attribute='name_') }}</td>
+        </tr>
+        <tr>
+          <td>Hopfen</td>
+          <td>{{ recipe.hops|join(', ', attribute='name_') }}</td>
+        </tr>
+        <tr>
+          <td>Sonstiges</td>
+          <td>{{ recipe.miscs|join(', ', attribute='name_') }}</td>
+        </tr>
       </table>
     </div>
 {% endmacro %}

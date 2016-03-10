@@ -5,11 +5,10 @@ copyright (c) 2016 by Stefan Lehmann,
 licensed under the MIT license
 
 """
-from flask import render_template, request, redirect, url_for, abort, jsonify, \
-    flash
+from flask import render_template, request, redirect, url_for, abort, jsonify
 from app import app, db
 from .forms import RecipeForm
-from .models import Recipe, RecipeMalt, RecipeHop
+from .models import Recipe, RecipeMalt, RecipeHop, RecipeMisc
 
 
 @app.route('/recipes')
@@ -48,6 +47,9 @@ def edit_recipe(recipe_id):
     if len(recipe.hops) == 0:
         recipe.hops = [RecipeHop()]
 
+    if len(recipe.miscs) == 0:
+        recipe.miscs = [RecipeMisc()]
+
     form = RecipeForm(obj=recipe)
     if form.validate_on_submit():
         form.populate_obj(recipe)
@@ -59,6 +61,9 @@ def edit_recipe(recipe_id):
 
         loose_items.extend(db.session.query(RecipeHop).filter(
             RecipeHop.recipe_id.is_(None)).all())
+
+        loose_items.extend(db.session.query(RecipeMisc).filter(
+            RecipeMisc.recipe_id.is_(None)).all())
 
         for item in loose_items:
             db.session.delete(item)
