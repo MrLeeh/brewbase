@@ -17,7 +17,7 @@
     {{ field.label(class="control-label col-sm-5") }}
     <div class="col-sm-7">
       <div class="input-group">
-        {{ field(class="form-control", type="number", readonly=readonly, **kwargs) }}
+        {{ field(class="form-control", readonly=readonly, **kwargs) }}
         {% if suffix %}
           <div class="input-group-addon" style="width:60px">{{ suffix }}</div>
         {% endif %}
