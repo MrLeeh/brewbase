@@ -78,10 +78,13 @@
 
       // remove malt
       $('.del-malt').click(function() {
-          if ($('.malt-div').length > 1) {
-              var thisRow = $(this).closest(".malt-div");
-              thisRow.remove();
-          }
+        var $row = $(this).closest('.malt-div');
+        if ($('.malt-div').length > 1) {
+          $row.remove();
+        }
+        else {
+          $row.find('input').val('');
+        }
       });
 
       // add hop
@@ -92,10 +95,13 @@
 
       // remove hop
       $('.del-hop').click(function() {
-          if ($('.hop-div').length > 1) {
-              var thisRow = $(this).closest(".hop-div");
-              thisRow.remove();
-          }
+        var $row = $(this).closest('.hop-div');
+        if ($('.hop-div').length > 1) {
+          $row.remove();
+        }
+        else {
+          $row.find('input').val('');
+        }
       });
 
       //  add misc
@@ -160,9 +166,11 @@
               {{ decimal_field(form.carbonisation, suffix="g/l", step=0.1)}}
             </div>
             <div class="col-sm-7">
-              <label class="control-label col-sm-4">{{ form.description.label }}</label>
-              <div class="col-sm-8">
-                {{ form.description(class="form-control", rows="12") }}
+              <div class="form-group">
+                <label class="control-label col-sm-4">{{ form.description.label }}</label>
+                <div class="col-sm-8">
+                  {{ form.description(class="form-control", rows="12") }}
+                </div>
               </div>
             </div>
           </div>
