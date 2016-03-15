@@ -42,13 +42,13 @@ def edit_recipe(recipe_id):
         abort(404)
 
     if len(recipe.malts) == 0:
-        recipe.malts = []
+        recipe.malts = [RecipeMalt()]
 
     if len(recipe.hops) == 0:
-        recipe.hops = []
+        recipe.hops = [RecipeHop()]
 
     if len(recipe.miscs) == 0:
-        recipe.miscs = []
+        recipe.miscs = [RecipeMisc()]
 
     form = RecipeForm(obj=recipe)
     if form.validate_on_submit():
