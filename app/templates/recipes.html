@@ -3,65 +3,152 @@
 {% from "common.html" import detail %}
 {% block title %}This is an example page{% endblock %}
 
+
+{% block styles %}
+<style>
+
+  .detail-row {
+    display: none;
+  }
+
+  .link-less {
+    display: none;
+  }
+</style>
+{% endblock %}
+
+
 {% block scripts %}
-
-  <script>
-    $(document).ready(function() {
-
-      $('.recipe-delete-btn').click(function() {
-        var delete_url = $(this).attr('data-delete-url');
-        $.ajax({
-          url: delete_url,
-          type: 'DELETE',
-          success: function(response) {
-            if (response.status == 'OK') {
-              window.location = {{ url_for('recipe_list') }};
-            } else {
-              alert('Delete failed.')
-            }
+<script>
+  $(document).ready(function() {
+    $('.recipe-delete-btn').click(function() {
+      var delete_url = $(this).attr('data-delete-url');
+      $.ajax({
+        url: delete_url,
+        type: 'DELETE',
+        success: function(response) {
+          if (response.status == 'OK') {
+            window.location = {{ url_for('recipe_list') }};
+          } else {
+            alert('Delete failed.')
           }
-        });
-      });
-
-      $('#myModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var recipe_name = button.data('recipe-name');
-        var url = button.data('delete-url');
-        var modal = $(this);
-
-        modal.find('#myModalBody').text(
-          "Soll das Rezept \"" + recipe_name + "\" gelöscht werden?"
-        );
-
-        modal.find('#modalOk').attr("data-delete-url", url);
-
+        }
       });
     });
-  </script>
 
+    $('#myModal').on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget);
+      var recipe_name = button.data('recipe-name');
+      var url = button.data('delete-url');
+      var modal = $(this);
+
+      modal.find('#myModalBody').text(
+        "Soll das Rezept \"" + recipe_name + "\" gelöscht werden?"
+      );
+
+      modal.find('#modalOk').attr("data-delete-url", url);
+    });
+
+    $(document).ready(function() {
+      $('.link-more').click(function() {
+        $(this).closest('table').find('.detail-row').fadeIn('slow');
+        $('.link-more').hide();
+        $('.link-less').show();
+      });
+
+      $('.link-less').click(function() {
+        $(this).closest('table').find('.detail-row').fadeOut('slow');
+        $('.link-more').show();
+        $('.link-less').hide();
+      });
+    });
+  });
+</script>
 {% endblock %}
+
 
 {% block navbar %}
   {{ mynavbar() }}
 {% endblock %}
 
-{% block content %}
 
+{% block content %}
   {% for recipe in recipes %}
     <div class="row">
-      <div class="recipe-detail well col-sm-offset-2 col-sm-8">
-        {{ detail(recipe, link_title=False) }}
-        <div class="edit-controls">
-        <i class="icon-pencil"></i>
-        <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">Edit</a>
-        <span class="inline-pad"></span>
-        <i class="icon-trash"></i>
-        <a class="recipe-delete-link" href="#"
-         data-toggle="modal" data-target="#myModal" data-recipe-name="{{ recipe.name }}" data-delete-url="{{ url_for('delete_recipe', recipe_id=recipe.id) }}">Delete</a>
+      <div class="recipe-detail col-sm-offset-2 col-sm-8">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            {% if link_title %}
+              <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
+                {{ recipe.name }}
+              </a>
+            {% else %}
+              {{ recipe.name }}
+            {% endif %}
+            ({{ recipe.date | dateformat}})
+            <div class="dropdown pull-right">
+              <a class="btn btn-primary btn-xs" data-toggle="dropdown" expanded="false"><span class="glyphicon glyphicon-menu-down"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">Bearbeiten</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a class="recipe-delete-link" href="#" data-toggle="modal" data-target="#myModal" data-recipe-name="{{ recipe.name }}" data-delete-url="{{ url_for('delete_recipe', recipe_id=recipe.id) }}">Löschen</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="col-sm-8">
+              <table class="table">
+                <tr>
+                  <td>Biersorte:</td>
+                  <td>{{ recipe.beertype }}</td>
+                </tr>
+                <tr>
+                  <td>Stammwürze:</td>
+                  <td>{{ recipe.original_gravity }} °Pl</td>
+                </tr>
+                <tr>
+                  <td>Alkoholgehalt:</td>
+                  <td>{{ recipe.alcohol or '-'}} %<sub>vol</sub></td>
+                </tr>
+                <tr class="detail-row">
+                  <td>Bitterkeit:</td>
+                  <td>{{ recipe.bitterness or '-' }} IBU</td>
+                </tr>
+                <tr class="detail-row">
+                  <td>Farbe:</td>
+                  <td>{{ recipe.color or '-'}} EBC</td>
+                </tr>
+                <tr class="detail-row">
+                  <td>Karbonisierung:</td>
+                  <td>{{ recipe.carbonisation }} g/l</td>
+                </tr>
+                <tr class="detail-row">
+                  <td>Malz:</td>
+                  <td>{{ recipe.malts|join(', ', attribute='name_') }}</td>
+                </tr>
+                <tr class="detail-row">
+                  <td>Hopfen:</td>
+                  <td>{{ recipe.hops|join(', ', attribute='name_') }}</td>
+                </tr>
+                <tr class="detail-row">
+                  <td>Sonstiges:</td>
+                  <td>{{ recipe.miscs|join(', ', attribute='name_') }}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a class="link-more" href="#">mehr</a>
+                    <a class="link-less" href="#">weniger</a>
+                  </td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
   {% endfor %}
 
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

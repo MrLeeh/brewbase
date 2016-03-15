@@ -13,3 +13,8 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 from app import views, models
+
+
+@app.template_filter('dateformat')
+def dateformat(value, format='%d.%m.%Y'):
+    return value.strftime(format)

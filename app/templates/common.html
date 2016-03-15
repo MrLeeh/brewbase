@@ -30,62 +30,6 @@
 
 {% endmacro %}
 
-{% macro detail(
-  recipe, link_title=False, show_edit=True, show_decription=True) %}
-
-    <h3>
-      {% if link_title %}
-        <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
-          {{ recipe.name }}
-        </a>
-      {% else %}
-        {{ recipe.name }}
-      {% endif %}
-      ({{ recipe.date }})
-    </h3>
-
-    <div class="col-sm-8">
-      <table class="table">
-        <tr>
-          <td>Biersorte</td>
-          <td>{{ recipe.beertype }}</td>
-        </tr>
-        <tr>
-          <td>Stammwürze</td>
-          <td>{{ recipe.original_gravity }} °Pl</td>
-        </tr>
-        <tr>
-          <td>Alkoholgehalt</td>
-          <td>{{ recipe.alcohol }} %<sub>vol</sub></td>
-        </tr>
-        <tr>
-          <td>Bitterkeit</td>
-          <td>{{ recipe.bitterness }} IBU</td>
-        </tr>
-        <tr>
-          <td>Farbe</td>
-          <td>{{ recipe.color }} EBC</td>
-        </tr>
-        <tr>
-          <td>Karbonisierung</td>
-          <td>{{ recipe.carbonisation }} g/l</td>
-        </tr>
-        <tr>
-          <td>Malz</td>
-          <td>{{ recipe.malts|join(', ', attribute='name_') }}</td>
-        </tr>
-        <tr>
-          <td>Hopfen</td>
-          <td>{{ recipe.hops|join(', ', attribute='name_') }}</td>
-        </tr>
-        <tr>
-          <td>Sonstiges</td>
-          <td>{{ recipe.miscs|join(', ', attribute='name_') }}</td>
-        </tr>
-      </table>
-    </div>
-{% endmacro %}
-
 {% macro malt_data(i, malt) %}
    <div class="form-group">
       <div class="col-sm-8">
