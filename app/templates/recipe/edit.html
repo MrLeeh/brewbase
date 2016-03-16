@@ -2,39 +2,6 @@
 {% from "navbar.html" import mynavbar %}
 {% from "common.html" import edit_field, decimal_field, malt_data %}
 
-{% macro ingredient_list(name, label, items, qty_unit) %}
-  <div class="panel panel-default">
-    <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ name }}">
-      <h4 class="panel-title">
-        <a href="#">{{ label }}<span class="caret"></span></a>
-        <a href="#" class="add-{{ name }}" data-target="{{ name }}"><span class="glyphicon glyphicon-plus pull-right"></span></a>
-      </h4>
-    </div>
-    <div id="collapse-{{ name }}" class="panel-collapse collapse in">
-      <div id="{{ name }}" class="panel-body {{ name }}-body">
-        {% for item in items %}
-          <div class="col-sm-12 {{ name }}-div" id="{{ name }}-{{ loop.index0 }}">
-            <div class="form-horizontal">
-              <div class="form-group">
-                <div class="col-sm-6">
-                  {{ item.name_(class="form-control") }}
-                </div>
-                <div class="col-sm-2">
-                  <div class="input-group">
-                    {{ item.qty(class="form-control") }}
-                    <div class="input-group-addon" style="width:30px">{{ qty_unit }}</div>
-                  </div>
-                </div>
-                <a class="btn btn-link del-{{ name }}" id="del-{{ name }}-{{ loop.index0 }}"><span class="glyphicon glyphicon-trash"></span></a>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-{% endmacro %}
-
 {% block navbar %}
   {{ mynavbar() }}
 {% endblock %}
@@ -149,7 +116,7 @@
       <div class="row">
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#recipe-datasheet">Datenblatt</a></li>
-          <li><a data-toggle="tab" href="#recipe-ingredients">Zutaten</a></li>
+          <li><a data-toggle="tab" href="#recipe-malt">Malz</a></li>
           <li><a data-toggle="tab" href="#recipe-mash">Maischen</a></li>
           <li><a data-toggle="tab" href="#">Würzekochen</a></li>
         </ul>
@@ -176,16 +143,10 @@
           </div>
         </div>
 
-        <div id="recipe-ingredients" class="tab-pane fade in inactive">
-          <div class="row">
-           <div class="panel-group">
-
-            {{ ingredient_list('malt', 'Malz', form.malts, 'kg') }}
-
-            {{ ingredient_list('hop', 'Hopfen', form.hops, 'g')}}
-
-            {{ ingredient_list('misc', 'Sonstige Zutaten', form.miscs, 'g')}}
-
+      <div id="recipe-malt" class="tab-pane fade in incactive">
+        <div class="row">
+          <div class="panel-group">
+            {% include "recipe/malt.html" %}
           </div>
         </div>
       </div>

@@ -51,6 +51,7 @@ def edit_recipe(recipe_id):
         recipe.miscs = [RecipeMisc()]
 
     form = RecipeForm(obj=recipe)
+
     if form.validate_on_submit():
         form.populate_obj(recipe)
         db.session.commit()

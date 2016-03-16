@@ -31,6 +31,18 @@ class Recipe(db.Model):
             .format(self=self)
         )
 
+    @property
+    def ebc(self):
+        """
+        Calculate color of the recipe by the European Color Convention.
+
+        """
+        try:
+            return (sum(malt.qty * malt.ebc for malt in self.malts) /
+                    sum(malt.qty for malt in self.malts))
+        except TypeError:
+            return None
+
 
 class RecipeHop(db.Model):
     __tablename__ = 'recipe_hops'
@@ -50,6 +62,7 @@ class RecipeMalt(db.Model):
     recipe = relationship('Recipe', backref=backref('malts', order_by=id))
     name_ = Column(String(80))
     qty = Column(Float(precision=1))
+    ebc = Column(Float())
     comment = Column(Text)
 
 

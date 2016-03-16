@@ -27,6 +27,7 @@ def empty_or_decimal(form, field):
 class MaltForm(NoCsrfForm):
     name_ = TextField('Name:', [Length(max=80)])
     qty = DecimalField('Menge (kg):')
+    ebc = DecimalField('Farbe (EBC)', places=0)
     comment = TextAreaField('Bemerkungen:')
 
 

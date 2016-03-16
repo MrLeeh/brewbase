@@ -1,0 +1,57 @@
+<style type="text/css">
+  .centered {
+    text-align: center;
+  }
+</style>
+
+<script>
+  $(document).ready(function() {
+    $('.delete-malt').click(function() {
+      $(this).closest('tr').remove();
+    });
+
+    $('#add-malt').click(function() {
+      $last_row = $('table tr.malt-entry').last()
+      $new_row = $last_row.clone(true, true).insertAfter($('tr.malt-entry').last());
+    });
+  });
+</script>
+
+<table class="table">
+  <tr>
+    <th class="col-sm-4"><label>Malzsorte</label></th>
+    <th class="col-sm-2"><label>Menge</label></th>
+    <th class="col-sm-2"><label>Farbe</label></th>
+    <th class="col-sm-1 centered"><a id="add-malt" class="btn btn-xs" href="#"><span class="glyphicon glyphicon-plus"></span></a></th>
+  </tr>
+
+  {% for malt in form.malts %}
+  <tr class="malt-entry">
+    <td class="col-sm-4">{{ malt.name_(class="form-control") }}</td>
+    <td class="col-sm-2">
+      <div class="input-group">
+        {{ malt.qty(class="form-control centered") }}
+        <span class="input-group-addon">kg</span>
+      </div>
+    </td>
+    <td class="col-sm-2">
+      <div class="input-group">
+        {{ malt.ebc(class="form-control centered") }}
+        <span class="input-group-addon">EBC</span>
+      </div>
+    </td>
+    <td class="col-sm-1 centered">
+      <a class="btn btn-link delete-malt"><span class="glyphicon glyphicon-trash"></span></a>
+    </td>
+  </tr>
+  {% endfor %}
+  <tr class="malt-sumary">
+    <td style="text-align: right;"><b>Gesamt:</b></td>
+    <td style="text-align: center;">
+      <b>{{ form.malts.data | sum(attribute='qty') }} kg</b>
+    </td>
+    <td style="text-align: center;">
+      <b>{{ "{:.0f}".format(recipe.ebc) or "-"}} EBC</b>
+    </td>
+  </tr>
+</table>
