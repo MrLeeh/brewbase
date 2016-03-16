@@ -51,13 +51,13 @@
 
     $(document).ready(function() {
       $('.link-more').click(function() {
-        $(this).closest('table').find('.detail-row').fadeIn('slow');
+        $(this).closest('table').find('.detail-row').slideDown();
         $('.link-more').hide();
         $('.link-less').show();
       });
 
       $('.link-less').click(function() {
-        $(this).closest('table').find('.detail-row').fadeOut('slow');
+        $(this).closest('table').find('.detail-row').slideUp('slow');
         $('.link-more').show();
         $('.link-less').hide();
       });

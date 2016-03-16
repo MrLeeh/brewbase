@@ -150,7 +150,7 @@
         <ul class="nav nav-tabs">
           <li class="active"><a data-toggle="tab" href="#recipe-datasheet">Datenblatt</a></li>
           <li><a data-toggle="tab" href="#recipe-ingredients">Zutaten</a></li>
-          <li><a data-toggle="tab" href="#">Maischen</a></li>
+          <li><a data-toggle="tab" href="#recipe-mash">Maischen</a></li>
           <li><a data-toggle="tab" href="#">Würzekochen</a></li>
         </ul>
       </div>
@@ -189,6 +189,11 @@
           </div>
         </div>
       </div>
+
+      <div id="recipe-mash" class="tab-pane fade in inactive">
+        {% include "recipe/mash.html" %}
+      </div
+
       <div class="row">
         <hr class="divider"/>
         <div class="form-actions">
