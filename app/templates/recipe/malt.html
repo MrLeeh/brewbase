@@ -7,15 +7,52 @@
 <script>
   $(document).ready(function() {
     $('.delete-malt').click(function() {
-      $(this).closest('tr').remove();
+      if ($('tr.malt-entry').length == 1) {
+        $('tr.malt-entry input').val('');
+      }
+      else {
+        $(this).closest('tr').remove();
+      }
     });
 
     $('#add-malt').click(function() {
-      $last_row = $('table tr.malt-entry').last()
-      $new_row = $last_row.clone(true, true).insertAfter($('tr.malt-entry').last());
+      var $last_row = $('table tr.malt-entry').last()
+      var $new_row = $last_row.clone(true, true).insertAfter($('tr.malt-entry').last());
+      var new_num = parseInt($last_row.attr('id').match(/\d+/)) + 1;
+
+      $new_row.attr('id', 'malts-' + new_num);
+      $new_row.find('input.malt-name')
+        .attr('id', 'malts-' + new_num + '-name_')
+        .attr('name', 'malts-' + new_num + '-name_')
+        .val('');
+
+      $new_row.find('input.malt-qty')
+        .attr('id', 'malts-' + new_num + '-qty')
+        .attr('name', 'malts-' + new_num + '-qty')
+        .val('');
+
+      $new_row.find('input.malt-ebc')
+        .attr('id', 'malts-' + new_num + '-ebc')
+        .attr('name', 'malts-' + new_num + '-ebc')
+        .val('');
+
     });
   });
 </script>
+
+
+{% macro edit_field(field, suffix) %}
+    {% if suffix != "" %}<div class="input-group">{% endif %}
+      {{ field(**kwargs) }}
+      {% if suffix != "" %}
+        <span class="input-group-addon">{{ suffix }}</span>
+      {% endif %}
+    {% if suffix != "" %}</div>{% endif %}
+    {% for error in field.errors %}
+      <span class="help-inline">{{ error }}</span>
+    {% endfor %}
+{% endmacro %}
+
 
 <table class="table">
   <tr>
@@ -26,20 +63,20 @@
   </tr>
 
   {% for malt in form.malts %}
-  <tr class="malt-entry">
-    <td class="col-sm-4">{{ malt.name_(class="form-control") }}</td>
-    <td class="col-sm-2">
-      <div class="input-group">
-        {{ malt.qty(class="form-control centered") }}
-        <span class="input-group-addon">kg</span>
-      </div>
+  <tr id="{{ malt.id }}" class="malt-entry">
+    <!-- malt name -->
+    <td class="col-sm-4">
+      {{ edit_field(malt.name_, "", class="form-control malt-name") }}
     </td>
+    <!-- malt quantity -->
     <td class="col-sm-2">
-      <div class="input-group">
-        {{ malt.ebc(class="form-control centered") }}
-        <span class="input-group-addon">EBC</span>
-      </div>
+      {{ edit_field(malt.qty, "kg", class="form-control centered malt-qty") }}
     </td>
+    <!-- malt ebc -->
+    <td class="col-sm-2">
+      {{ edit_field(malt.ebc, "EBC", class="form-control centered malt-ebc") }}
+    </td>
+    <!-- delete button -->
     <td class="col-sm-1 centered">
       <a class="btn btn-link delete-malt"><span class="glyphicon glyphicon-trash"></span></a>
     </td>
@@ -48,7 +85,7 @@
   <tr class="malt-sumary">
     <td style="text-align: right;"><b>Gesamt:</b></td>
     <td style="text-align: center;">
-      <b>{{ form.malts.data | sum(attribute='qty') }} kg</b>
+      <b>{{ recipe.malt_qty or "-" }} kg</b>
     </td>
     <td style="text-align: center;">
       <b>{{ "{:.0f}".format(recipe.ebc) or "-"}} EBC</b>

@@ -43,6 +43,17 @@ class Recipe(db.Model):
         except TypeError:
             return None
 
+    @property
+    def malt_qty(self):
+        """
+        Calculate quantity of all used malts.
+
+        """
+        try:
+            return sum(malt.qty for malt in self.malts)
+        except TypeError:
+            return None
+
 
 class RecipeHop(db.Model):
     __tablename__ = 'recipe_hops'
