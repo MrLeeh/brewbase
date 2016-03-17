@@ -27,22 +27,19 @@
       {% endfor %}
     </div>
   </div>
-
 {% endmacro %}
 
-{% macro malt_data(i, malt) %}
-   <div class="form-group">
-      <div class="col-sm-8">
-        {% if i==0 %}<label>Name</label>{% endif %}
-        <input type="text" class="form-control" value="{{ malt.name }}"></input>
-      </div>
 
-      <div class="col-sm-2">
-        {% if i==0 %}<label for="menge1">Menge</label>{% endif %}
-        <div class="input-group">
-          <input id="xmenge1" type="text" class="form-control" value="{{ malt.qty }}"></input>
-          <div class="input-group-addon" style="width:30px">kg</div>
-        </div>
+{% macro decimal_label(label, value, suffix=None) %}
+  <div class="form-group">
+    <label class="control-label col-sm-5")>{{ label }}</label>
+    <div class="col-sm-7">
+      <div class="input-group">
+        <input class="form-control" readonly="{{ readonly }}" value={% if value is none %}"-"{% else %}{{ "%.0f" | format(value) }}{% endif %}>
+        {% if suffix %}
+          <div class="input-group-addon" style="width:60px">{{ suffix }}</div>
+        {% endif %}
       </div>
     </div>
+  </div>
 {% endmacro %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% from "navbar.html" import mynavbar %}
-{% from "common.html" import edit_field, decimal_field, malt_data %}
+{% from "common.html" import edit_field, decimal_field, malt_data, decimal_label %}
 
 {% block navbar %}
   {{ mynavbar() }}
@@ -17,92 +17,6 @@
 {% endblock %}
 
 {% block scripts %}
-  <script type="text/javascript">
-
-    function add_item(type) {
-      var $resource_div = $('#' + type);
-      var $last_entry_div = $resource_div.children('div').last();
-      var $new_div = $last_entry_div.clone(true, true).appendTo($resource_div);
-      var new_num = parseInt($new_div.attr('id').match(/\d+/)) + 1;
-
-      $new_div.attr('id', type + '-' + new_num);
-      $new_div.find('input[id*="name_"]')
-        .attr('id', type + 's-' + new_num + '-name_')
-        .attr('name', type + 's-' + new_num + '-name_')
-      $new_div.find("input[id*='qty']")
-        .attr('id', type + 's-' + new_num + '-qty')
-        .attr('name', type + 's-' + new_num + '-qty')
-      $new_div.find('input').val('');
-    };
-
-    $(document).ready(function() {
-
-      // add malt
-      $('a.add-malt').click(function(event) {
-        add_item('malt');
-        event.stopPropagation();
-      });
-
-      // remove malt
-      $('.del-malt').click(function() {
-        var $row = $(this).closest('.malt-div');
-        if ($('.malt-div').length > 1) {
-          $row.remove();
-        }
-        else {
-          $row.find('input').val('');
-        }
-      });
-
-      // add hop
-      $('a.add-hop').click(function(event) {
-        add_item('hop');
-        event.stopPropagation();
-      });
-
-      // remove hop
-      $('.del-hop').click(function() {
-        var $row = $(this).closest('.hop-div');
-        if ($('.hop-div').length > 1) {
-          $row.remove();
-        }
-        else {
-          $row.find('input').val('');
-        }
-      });
-
-      //  add misc
-      $('a.add-misc').click(function(event) {
-        add_item('misc');
-        event.stopPropagation();
-      });
-
-        // remove misc
-      $('.del-misc').click(function() {
-        var $row = $(this).closest('.misc-div');
-        if ($('.misc-div').length > 1) {
-          $row.remove();
-        }
-        else {
-          $row.find('input').val('');
-        }
-      });
-
-    $('#main-form').submit(function(event) {
-      var divs = [$('.malt-div'), $('.hop-div'), $('.misc-div')];
-      $.each(divs, function(_, $div) {
-        $div.each(function(index, item) {
-          $name = $(item).find('input').eq(0);
-          $qty = $(item).find('input').eq(1);
-          if ($name.val() == '') {
-            $(item).remove();
-          };
-        });
-      });
-    });
-
-  });
-  </script>
 {% endblock %}
 
 {% block content %}
@@ -129,7 +43,7 @@
               {{ decimal_field(form.original_gravity, suffix="°Pl", step=0.1) }}
               {{ decimal_field(form.alcohol, suffix="%", step=0.1) }}
               {{ decimal_field(form.bitterness, suffix="IBU") }}
-              {{ decimal_field(form.color, suffix="EBC") }}
+              {{ decimal_label("Bierfarbe", recipe.ebc, suffix="EBC") }}
               {{ decimal_field(form.carbonisation, suffix="g/l", step=0.1)}}
             </div>
             <div class="col-sm-7">
@@ -164,6 +78,7 @@
       </div>
     </div>
   </form>
+  <div class="row">
   {% if form.errors %}
     <ul class="errors">
         {% for field_name, field_errors in form.errors|dictsort if field_errors %}
@@ -172,5 +87,6 @@
             {% endfor %}
         {% endfor %}
     </ul>
+  </div>
   {% endif %}
 {% endblock %}

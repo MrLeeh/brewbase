@@ -35,7 +35,17 @@
         .attr('id', 'malts-' + new_num + '-ebc')
         .attr('name', 'malts-' + new_num + '-ebc')
         .val('');
+    });
 
+    $('#main-form').submit(function(event) {
+      $('.malt-entry').each(function(index, item) {
+        $name = $(item).find('.malt-name').first();
+        $qty = $(item).find('.malt-qty').first();
+        $ebc = $(item).find('.malt-ebc').first();
+        if ($name.val() == '' && $qty.val() == '' && $ebc.val() == '') {
+          $(item).remove();
+        };
+      });
     });
   });
 </script>
@@ -54,7 +64,7 @@
 {% endmacro %}
 
 
-<table class="table">
+<table class="malt-table table">
   <tr>
     <th class="col-sm-4"><label>Malzsorte</label></th>
     <th class="col-sm-2"><label>Menge</label></th>
@@ -88,7 +98,7 @@
       <b>{{ recipe.malt_qty or "-" }} kg</b>
     </td>
     <td style="text-align: center;">
-      <b>{{ "{:.0f}".format(recipe.ebc) or "-"}} EBC</b>
+      <b>{% if recipe.ebc is none %}-{% else %}{{ "%.0f" | format(recipe.ebc) }}{% endif %} EBC</b>
     </td>
   </tr>
 </table>

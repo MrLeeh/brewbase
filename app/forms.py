@@ -11,7 +11,7 @@ from wtforms import FieldList, ValidationError
 from wtforms import Form as NoCsrfForm
 from wtforms.fields import TextField, DecimalField, IntegerField, \
     TextAreaField, FormField
-from wtforms.validators import Length, Optional
+from wtforms.validators import Length, Optional, Required
 
 
 def empty_or_decimal(form, field):
@@ -25,7 +25,7 @@ def empty_or_decimal(form, field):
 
 
 class MaltForm(NoCsrfForm):
-    name_ = TextField('Name:', [Length(max=80)])
+    name_ = TextField('Name:', [Length(max=80), Required()])
     qty = DecimalField('Menge (kg):')
     ebc = DecimalField('Farbe (EBC)', places=0)
     comment = TextAreaField('Bemerkungen:')
