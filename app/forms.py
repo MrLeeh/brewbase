@@ -34,6 +34,8 @@ class MaltForm(NoCsrfForm):
 class HopForm(NoCsrfForm):
     name_ = TextField('Name:', [Length(max=80)])
     qty = DecimalField('Menge:', places=0)
+    alpha_acid = DecimalField('Alpha-Säure:', places=0)
+    cooking_time = DecimalField('Kochzeit:', places=0)
     comment = TextAreaField('Bemerkungen:')
 
 

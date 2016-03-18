@@ -1,0 +1,104 @@
+{% macro edit_field(field, suffix) %}
+    {% if suffix != "" %}<div class="input-group">{% endif %}
+      {{ field(**kwargs) }}
+      {% if suffix != "" %}
+        <span class="input-group-addon">{{ suffix }}</span>
+      {% endif %}
+    {% if suffix != "" %}</div>{% endif %}
+    {% for error in field.errors %}
+      <span class="help-inline">{{ error }}</span>
+    {% endfor %}
+{% endmacro %}
+
+
+<script>
+  $(document).ready(function() {
+
+    $('.delete-hop').click(function() {
+      if ($('tr.hop-entry').length == 1) {
+        $('tr.hop-entry input').val('');
+      }
+      else {
+        $(this).closest('tr').remove();
+      }
+    });
+
+    $('#add-hop').click(function() {
+      var $last_row = $('table tr.hop-entry').last()
+      var $new_row = $last_row.clone(true, true).insertAfter($('tr.hop-entry').last());
+      var new_num = parseInt($last_row.attr('id').match(/\d+/)) + 1;
+
+      $new_row.attr('id', 'hops-' + new_num);
+      $new_row.find('input.hop-name')
+        .attr('id', 'hops-' + new_num + '-name_')
+        .attr('name', 'hops-' + new_num + '-name_')
+        .val('');
+
+      $new_row.find('input.hop-qty')
+        .attr('id', 'hops-' + new_num + '-qty')
+        .attr('name', 'hops-' + new_num + '-qty')
+        .val('');
+
+      $new_row.find('input.hop-alpha-acid')
+        .attr('id', 'hops-' + new_num + '-alpha-acid')
+        .attr('name', 'hops-' + new_num + '-alpha-acid')
+        .val('');
+
+      $new_row.find('input.hop.cooking-time')
+        .attr('id', 'hops-' + new_num + '-cooking-time')
+        .attr('name', 'hops-' + new_num + '-cooking-time')
+        .val('');
+    });
+
+    $('#main-form').submit(function(event) {
+      $('.hop-entry').each(function(index, item) {
+        $name = $(item).find('.hop-name').first();
+        $qty = $(item).find('.hop-qty').first();
+        $alpha_acid = $(item).find('.hop-alpha-acid').first();
+        $cooking_time = $(item).find('.hop-cooking-time').first();
+        if ($name.val() == ''
+            && $qty.val() == ''
+            && $alpha_acid.val() == ''
+            &&  $cooking_time.val() == '') {
+          $(item).remove();
+        };
+      });
+    });
+
+  });
+</script>
+
+
+<table class="hop-table table">
+  <tr>
+    <th class="col-sm-4"><label>Hopfen</label></th>
+    <th class="col-sm-2"><label>Menge</label></th>
+    <th class="col-sm-2"><label>&alpha;-Säure</label></th>
+    <th class="col-sm-2"><label>Kochzeit</label></th>
+    <th class="col-sm-1 centered"><a id="add-hop" class="btn btn-xs" href="#"><span class="glyphicon glyphicon-plus"></span></a></th>
+  </tr>
+  {% for hop in form.hops %}
+  <tr id="{{ hop.id }}" class="hop-entry">
+    <!-- hop name -->
+    <td class="col-sm-4">
+      {{ edit_field(hop.name_, "", class="form-control hop-name") }}
+    </td>
+    <!-- hop quantity -->
+    <td class="col-sm-2">
+      {{ edit_field(hop.qty, "g", class="form-control centered hop-qty")}}
+    </td>
+    <!-- hop alhpa acid -->
+    <td class="col-sm-2">
+      {{ edit_field(hop.alpha_acid, "%", class="form-control centered hop-alpha-acid") }}
+    </td>
+    <!-- hop cooking time -->
+    <td class="col-sm-2">
+      {{ edit_field(hop.cooking_time, "min", class="form-control centered hop-cooking-time")}}
+    </td>
+    <!-- delete button -->
+    <td class="col-sm-1 centered">
+      <a class="btn btn-link delete-hop"><span class="glyphicon glyphicon-trash"></span></a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>

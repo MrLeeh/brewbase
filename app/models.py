@@ -63,6 +63,9 @@ class RecipeHop(db.Model):
     recipe = relationship('Recipe', backref=backref('hops', order_by=id))
     name_ = Column(String(80))
     qty = Column(Float(precision=0))
+    alpha_acid = Column(Float(precision=1))
+    aroma = Column(Float(precision=1))
+    cooking_time = Column(Float())
     comment = Column(Text)
 
 
@@ -84,4 +87,12 @@ class RecipeMisc(db.Model):
     recipe = relationship('Recipe', backref=backref('miscs', order_by=id))
     name_ = Column(String(80))
     qty = Column(Float(precision=0))
+    comment = Column(Text)
+
+
+class Malt(db.Model):
+    __tablename = 'malt'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80))
+    ebc = Column(Float(precision=0))
     comment = Column(Text)
