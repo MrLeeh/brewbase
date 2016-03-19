@@ -10,6 +10,13 @@
     {% endfor %}
 {% endmacro %}
 
+<style>
+  .hop-comment-dummy {
+    height: 0px;
+    width: 0px;
+    display: none;
+  }
+</style>
 
 <script>
   $(document).ready(function() {
@@ -44,10 +51,32 @@
         .attr('name', 'hops-' + new_num + '-alpha-acid')
         .val('');
 
-      $new_row.find('input.hop.cooking-time')
+      $new_row.find('input.hop-cooking-time')
         .attr('id', 'hops-' + new_num + '-cooking-time')
         .attr('name', 'hops-' + new_num + '-cooking-time')
         .val('');
+
+      $new_row.find('div.hop-comment')
+        .text('');
+
+      $new_row.find('input.hop-comment-dummy')
+        .attr('id', 'hops-' + new_num + '-comment')
+        .attr('name', 'hops-' + new_num + '-comment')
+        .val('');
+    });
+
+    $('.hop-template').click(function() {
+      $row = $(this).closest('tr');
+      $row.find('.hop-name').val($(this).text());
+      $row.find('.hop-alpha-acid').val($(this).data('alpha-acid'));
+      $row.find('.hop-comment').text($(this).data('comment'));
+      $row.find('.hop-comment-dummy').text($(this).data('comment'));
+    });
+
+    $('.hop-name').keyup(function() {
+      $row = $(this).closest('tr');
+      $row.find('.hop-comment').text('');
+      $row.find('.hop-comment-dummy').text('');
     });
 
     $('#main-form').submit(function(event) {
@@ -72,8 +101,8 @@
 <table class="hop-table table">
   <tr>
     <th class="col-sm-4"><label>Hopfen</label></th>
-    <th class="col-sm-2"><label>Menge</label></th>
     <th class="col-sm-2"><label>&alpha;-Säure</label></th>
+    <th class="col-sm-2"><label>Menge</label></th>
     <th class="col-sm-2"><label>Kochzeit</label></th>
     <th class="col-sm-1 centered"><a id="add-hop" class="btn btn-xs" href="#"><span class="glyphicon glyphicon-plus"></span></a></th>
   </tr>
@@ -81,15 +110,27 @@
   <tr id="{{ hop.id }}" class="hop-entry">
     <!-- hop name -->
     <td class="col-sm-4">
-      {{ edit_field(hop.name_, "", class="form-control hop-name") }}
-    </td>
-    <!-- hop quantity -->
-    <td class="col-sm-2">
-      {{ edit_field(hop.qty, "g", class="form-control centered hop-qty")}}
+      <div class="input-group">
+        {{ edit_field(hop.name_, "", class="form-control hop-name") }}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+          <ul class="dropdown-menu scrollable-menu" role="menu">
+            {% for hop in hoplist %}
+              <li><a href="#" class="hop-template" data-alpha-acid="{{ hop.alpha_acid }}" data-comment="{{ hop.comment }}">{{ hop.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="hop-comment">{{ hop.comment.data }}</div>
+      {{ hop.comment(class="hop-comment-dummy") }}
     </td>
     <!-- hop alhpa acid -->
     <td class="col-sm-2">
       {{ edit_field(hop.alpha_acid, "%", class="form-control centered hop-alpha-acid") }}
+    </td>
+    <!-- hop quantity -->
+    <td class="col-sm-2">
+      {{ edit_field(hop.qty, "g", class="form-control centered hop-qty")}}
     </td>
     <!-- hop cooking time -->
     <td class="col-sm-2">

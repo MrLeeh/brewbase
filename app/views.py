@@ -8,7 +8,7 @@ licensed under the MIT license
 from flask import render_template, request, redirect, url_for, abort, jsonify
 from app import app, db
 from .forms import RecipeForm
-from .models import Recipe, RecipeMalt, RecipeHop, RecipeMisc
+from .models import Recipe, RecipeMalt, RecipeHop, RecipeMisc, Malt, Hop
 
 
 @app.route('/recipes')
@@ -71,7 +71,12 @@ def edit_recipe(recipe_id):
         db.session.commit()
 
         return redirect(url_for('recipe_list'))
-    return render_template('recipe/edit.html', form=form, recipe=recipe)
+
+    return render_template(
+        'recipe/edit.html', form=form, recipe=recipe,
+        maltlist=Malt.query.order_by(Malt.name).all(),
+        hoplist=Hop.query.order_by(Hop.name).all()
+    )
 
 
 @app.route('/recipes/<int:recipe_id>/delete/', methods=['DELETE'])

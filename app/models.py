@@ -96,3 +96,11 @@ class Malt(db.Model):
     name = Column(String(80))
     ebc = Column(Float(precision=0))
     comment = Column(Text)
+
+
+class Hop(db.Model):
+    __tablename__ = 'hops'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80))
+    alpha_acid = Column(Float(precision=1))
+    comment = Column(Text)

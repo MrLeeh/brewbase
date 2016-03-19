@@ -31,6 +31,12 @@
         .val('');
     });
 
+    $('.malt-template').click(function() {
+      $row = $(this).closest('tr');
+      $row.find('.malt-name').val($(this).text());
+      $row.find('.malt-ebc').val($(this).data('ebc'));
+    });
+
     $('#main-form').submit(function(event) {
       $('.malt-entry').each(function(index, item) {
         $name = $(item).find('.malt-name').first();
@@ -70,7 +76,17 @@
   <tr id="{{ malt.id }}" class="malt-entry">
     <!-- malt name -->
     <td class="col-sm-4">
-      {{ edit_field(malt.name_, "", class="form-control malt-name") }}
+      <div class="input-group">
+        {{ edit_field(malt.name_, "", class="form-control malt-name") }}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+          <ul class="dropdown-menu scrollable-menu" role="menu">
+            {% for malt in maltlist %}
+              <li><a href="#" class="malt-template" data-ebc="{{ malt.ebc }}">{{ malt.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     </td>
     <!-- malt quantity -->
     <td class="col-sm-2">

@@ -10,7 +10,7 @@ from flask.ext.wtf import Form
 from wtforms import FieldList, ValidationError
 from wtforms import Form as NoCsrfForm
 from wtforms.fields import TextField, DecimalField, IntegerField, \
-    TextAreaField, FormField
+    TextAreaField, FormField, SelectField
 from wtforms.validators import Length, Optional, Required
 
 
