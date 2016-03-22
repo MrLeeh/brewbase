@@ -30,12 +30,12 @@
 {% endmacro %}
 
 
-{% macro decimal_label(label, value, suffix=None) %}
+{% macro decimal_label(label, value, suffix=None, class="form-control") %}
   <div class="form-group">
     <label class="control-label col-sm-5")>{{ label }}</label>
     <div class="col-sm-7">
       <div class="input-group">
-        <input class="form-control" readonly="{{ readonly }}" value={% if value is none %}"-"{% else %}{{ "%.0f" | format(value) }}{% endif %}>
+        <input class="{{ class }}" readonly="{{ readonly }}" value={% if value is none %}"-"{% else %}{{ "%.0f" | format(value) }}{% endif %}>
         {% if suffix %}
           <div class="input-group-addon" style="width:60px">{{ suffix }}</div>
         {% endif %}

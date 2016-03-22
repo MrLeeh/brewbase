@@ -41,11 +41,11 @@
         <div id="recipe-datasheet" class="tab-pane fade in active">
           <div class="row">
             <div class="col-sm-5">
-              {{ decimal_field(form.original_gravity, suffix="°Pl", step=0.1) }}
-              {{ decimal_field(form.alcohol, suffix="%", step=0.1) }}
-              {{ decimal_field(form.bitterness, suffix="IBU") }}
-              {{ decimal_label("Bierfarbe", recipe.ebc, suffix="EBC") }}
-              {{ decimal_field(form.carbonisation, suffix="g/l", step=0.1)}}
+              {{ decimal_field(form.original_gravity, suffix="°Pl", step=0.1, class="form-control centered") }}
+              {{ decimal_field(form.alcohol, suffix="%", step=0.1, class="form-control centered") }}
+              {{ decimal_field(form.bitterness, suffix="IBU", class="form-control centered") }}
+              {{ decimal_label("Bierfarbe", recipe.ebc, suffix="EBC", class="form-control centered") }}
+              {{ decimal_field(form.carbonisation, suffix="g/l", step=0.1, class="form-control centered")}}
             </div>
             <div class="col-sm-7">
               <div class="form-group">
