@@ -1,12 +1,14 @@
 {% macro edit_field(field, suffix) %}
-    {% if suffix != "" %}<div class="input-group">{% endif %}
+    {% if suffix != "" %}<div class="input-group{% if field.errors %} has-error{% endif %}">{% endif %}
+
       {{ field(**kwargs) }}
+
       {% if suffix != "" %}
         <span class="input-group-addon">{{ suffix }}</span>
       {% endif %}
     {% if suffix != "" %}</div>{% endif %}
     {% for error in field.errors %}
-      <span class="help-inline">{{ error }}</span>
+      <span class="help-block">{{ error }}</span>
     {% endfor %}
 {% endmacro %}
 

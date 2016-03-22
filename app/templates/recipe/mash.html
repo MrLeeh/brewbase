@@ -1,5 +1,67 @@
 {% from "common.html" import edit_field %}
 
+<script>
+  $(document).ready(function() {
+
+    $('#add-mash').click(function() {
+      var $last_row = $('table tr.mash-entry').last();
+      var $new_row = $last_row.clone(true, true).insertAfter($('tr.mash-entry').last());
+      var new_num = parseInt($last_row.attr('id').match(/\d+/)) + 1;
+
+      $new_row.attr('id', 'mash-' + new_num);
+
+      // name
+      s = 'mash-' + new_num + '-name_'
+      $new_row.find('input.mash-name')
+        .attr('id', s)
+        .attr('name', s)
+        .val('');
+
+      // temperature
+      s = 'mash-' + new_num + '-temperature';
+      $new_row.find('input.mash-temperature')
+        .attr('id', s)
+        .attr('name', s)
+        .val('');
+
+      s = 'mash-' + new_num + '-duration';
+      $new_row.find('input.mash-duration')
+        .attr('id', s)
+        .attr('name', s)
+        .val('');
+    });
+
+    $('.delete-mash').click(function() {
+      if ($('tr.mash-entry').length == 1) {
+        $('tr.mash-entry input').val('');
+      }
+      else {
+        $(this).closest('tr').remove();
+      }
+    });
+
+    $('.mash-template').click(function() {
+      $row = $(this).closest('tr');
+      $row.find('.mash-name').val($(this).text());
+      $row.find('.mash-temperature').val($(this).data('temperature'));
+      $row.find('.mash-duration').val($(this).data('duration'));
+    });
+
+    $('#main-form').submit(function(event) {
+      $('.mash-entry').each(function(index, item) {
+        $name = $(item).find('.mash-name').first();
+        $temperature = $(item).find('.mash-temperature').first();
+        $duration = $(item).find('.mash-duration').first();
+        if ($name.val() == ''
+            && $temperature.val() == ''
+            && $duration.val() == '') {
+          $(item).remove();
+        };
+      });
+    });
+  });
+</script>
+
 <table class="mash-table table">
   <tr>
     <th class="col-sm-4"><label>Maischeschritt</label></th>
@@ -23,6 +85,19 @@
         </div>
       </div>
     </td>
+    <!-- temperature -->
+    <td class="col-sm-2">
+      {{ edit_field(mash.temperature, "°C", class="form-control centered mash-temperature") }}
+    </td>
+    <!-- duration -->
+    <td class="col-sm-2">
+      {{ edit_field(mash.duration, "Min.", class="form-control centered mash-duration") }}
+    </td>
+    <!-- delete button -->
+    <td class="col-sm-1 centered">
+      <a class="btn btn-link delete-mash"><span class="glyphicon glyphicon-trash"></span></a>
+    </td>
+
   </tr>
   {% endfor %}
 </table>

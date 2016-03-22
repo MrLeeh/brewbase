@@ -40,7 +40,7 @@ class Recipe(db.Model):
         try:
             return (sum(malt.qty * malt.ebc for malt in self.malts) /
                     sum(malt.qty for malt in self.malts))
-        except TypeError:
+        except (TypeError, ZeroDivisionError):
             return None
 
     @property
