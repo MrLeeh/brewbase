@@ -1,14 +1,4 @@
-{% macro edit_field(field, suffix) %}
-    {% if suffix != "" %}<div class="input-group">{% endif %}
-      {{ field(**kwargs) }}
-      {% if suffix != "" %}
-        <span class="input-group-addon">{{ suffix }}</span>
-      {% endif %}
-    {% if suffix != "" %}</div>{% endif %}
-    {% for error in field.errors %}
-      <span class="help-inline">{{ error }}</span>
-    {% endfor %}
-{% endmacro %}
+{% from "common.html" import edit_field %}
 
 <style>
   .hop-comment-dummy {

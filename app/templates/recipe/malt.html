@@ -1,3 +1,5 @@
+{% from "common.html" import edit_field %}
+
 <script>
   $(document).ready(function() {
     $('.delete-malt').click(function() {
@@ -49,19 +51,6 @@
     });
   });
 </script>
-
-
-{% macro edit_field(field, suffix) %}
-    {% if suffix != "" %}<div class="input-group">{% endif %}
-      {{ field(**kwargs) }}
-      {% if suffix != "" %}
-        <span class="input-group-addon">{{ suffix }}</span>
-      {% endif %}
-    {% if suffix != "" %}</div>{% endif %}
-    {% for error in field.errors %}
-      <span class="help-inline">{{ error }}</span>
-    {% endfor %}
-{% endmacro %}
 
 
 <table class="malt-table table">

@@ -5,7 +5,7 @@ copyright (c) 2016 by Stefan Lehmann,
 licensed under the MIT license
 
 """
-from .models import RecipeMalt, RecipeHop, RecipeMisc
+from .models import RecipeMalt, RecipeHop, RecipeMisc, RecipeMash
 from flask.ext.wtf import Form
 from wtforms import FieldList, ValidationError
 from wtforms import Form as NoCsrfForm
@@ -45,6 +45,12 @@ class MiscForm(NoCsrfForm):
     comment = TextAreaField('Bemerkungen:')
 
 
+class MashForm(NoCsrfForm):
+    name_ = TextField('Name:', [Length(max=80)])
+    duration = DecimalField('Dauer', places=0)
+    temperature = DecimalField('Temperatur', places=0)
+
+
 class RecipeForm(Form):
     # date = DateField('Datum:', [Required()], format='%d.%m.%Y')
     name = TextField('Name:', [Length(max=255)])
@@ -58,3 +64,4 @@ class RecipeForm(Form):
     malts = FieldList(FormField(MaltForm, default=lambda: RecipeMalt()))
     hops = FieldList(FormField(HopForm, default=lambda: RecipeHop()))
     miscs = FieldList(FormField(MiscForm, default=lambda: RecipeMisc()))
+    mash = FieldList(FormField(MashForm, default=lambda: RecipeMash()))
