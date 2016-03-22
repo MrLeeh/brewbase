@@ -1,0 +1,28 @@
+{% from "common.html" import edit_field %}
+
+<table class="mash-table table">
+  <tr>
+    <th class="col-sm-4"><label>Maischeschritt</label></th>
+    <th class="col-sm-2"><label>Temperatur</label></th>
+    <th class="col-sm-2"><label>Dauer</label></th>
+    <th class="col-sm-1 centered"><a id="add-mash" class="btn btn-xs" href="#"><span class="glyphicon glyphicon-plus"></span></a></th>
+  </tr>
+
+  {% for mash in form.mash %}
+  <tr id="{{ mash.id }}" class="mash-entry">
+    <td class="col-sm-4">
+      <div class="input-group">
+        {{ edit_field(mash.name_, "", class="form-control mash-name") }}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+          <ul class="dropdown-menu scrollable-menu" role="menu">
+            {% for templ in mash_templates %}
+              <li><a href="#" class="mash-template" data-duration="{{ templ.duration }}" data-temperature="{{ templ.temperature }}">{{ templ.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+</table>

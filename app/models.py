@@ -90,8 +90,19 @@ class RecipeMisc(db.Model):
     comment = Column(Text)
 
 
+class RecipeMash(db.Model):
+    __tablename__ = 'recipe_mash'
+    id = Column(Integer, primary_key=True)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'))
+    recipe = relationship('Recipe', backref=backref('mash', order_by=id))
+    name_ = Column(String(80))
+    duration = Column(Float(precision=0))
+    temperature = Column(Float(precision=0))
+    comment = Column(Text)
+
+
 class Malt(db.Model):
-    __tablename = 'malt'
+    __tablename__ = 'malt'
     id = Column(Integer, primary_key=True)
     name = Column(String(80))
     ebc = Column(Float(precision=0))
@@ -103,4 +114,13 @@ class Hop(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(80))
     alpha_acid = Column(Float(precision=1))
+    comment = Column(Text)
+
+
+class MashTemplate(db.Model):
+    __tablename__ = 'mash_templates'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80))
+    duration = Column(Float(precision=0))
+    temperature = Column(Float(precision=0))
     comment = Column(Text)

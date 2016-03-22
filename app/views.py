@@ -8,7 +8,8 @@ licensed under the MIT license
 from flask import render_template, request, redirect, url_for, abort, jsonify
 from app import app, db
 from .forms import RecipeForm
-from .models import Recipe, RecipeMalt, RecipeHop, RecipeMisc, Malt, Hop
+from .models import Recipe, RecipeMalt, RecipeHop, RecipeMisc, RecipeMash, \
+    Malt, Hop
 
 
 @app.route('/recipes')
@@ -49,6 +50,9 @@ def edit_recipe(recipe_id):
 
     if len(recipe.miscs) == 0:
         recipe.miscs = [RecipeMisc()]
+
+    if len(recipe.mash) == 0:
+        recipe.mash = [RecipeMash()]
 
     form = RecipeForm(obj=recipe)
 
