@@ -65,8 +65,8 @@
 <table class="mash-table table">
   <tr>
     <th class="col-sm-4"><label>Maischeschritt</label></th>
-    <th class="col-sm-2"><label>Temperatur</label></th>
-    <th class="col-sm-2"><label>Dauer</label></th>
+    <th class="col-sm-1"><label>Temperatur</label></th>
+    <th class="col-sm-1"><label>Dauer</label></th>
     <th class="col-sm-1 centered"><a id="add-mash" class="btn btn-xs" href="#"><span class="glyphicon glyphicon-plus"></span></a></th>
   </tr>
 
@@ -86,11 +86,11 @@
       </div>
     </td>
     <!-- temperature -->
-    <td class="col-sm-2">
+    <td class="col-sm-1">
       {{ edit_field(mash.temperature, "°C", class="form-control centered mash-temperature") }}
     </td>
     <!-- duration -->
-    <td class="col-sm-2">
+    <td class="col-sm-1">
       {{ edit_field(mash.duration, "Min.", class="form-control centered mash-duration") }}
     </td>
     <!-- delete button -->

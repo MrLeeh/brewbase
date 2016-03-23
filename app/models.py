@@ -16,7 +16,7 @@ class Recipe(db.Model):
 
     id = Column(Integer, primary_key=True)
     date = Column(Date, default=func.now())
-    description = Column(String)
+    description = Column(Text)
     name = Column(String(255), default='')
     beertype = Column(String(255), default='')
     original_gravity = Column(Float(precision=1))

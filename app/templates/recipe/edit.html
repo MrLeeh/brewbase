@@ -25,8 +25,10 @@
     {{ form.csrf_token }}
     <div class="container-fluid col-sm-10 col-sm-offset-1">
       <div class="row">
+        <div class="col-sm-12">
           {{ labeled_edit_field(form.name) }}
           {{ labeled_edit_field(form.beertype) }}
+        </div>
       </div>
       <div class="row">
         <ul class="nav nav-tabs">
@@ -41,17 +43,17 @@
       <div class="tab-content">
         <div id="recipe-datasheet" class="tab-pane fade in active">
           <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               {{ decimal_field(form.original_gravity, suffix="°Pl", step=0.1, class="form-control centered") }}
               {{ decimal_field(form.alcohol, suffix="%", step=0.1, class="form-control centered") }}
               {{ decimal_field(form.bitterness, suffix="IBU", class="form-control centered") }}
-              {{ decimal_label("Bierfarbe", recipe.ebc, suffix="EBC", class="form-control centered") }}
+              {{ decimal_label("Bierfarbe:", recipe.ebc, suffix="EBC", class="form-control centered") }}
               {{ decimal_field(form.carbonisation, suffix="g/l", step=0.1, class="form-control centered")}}
             </div>
-            <div class="col-sm-7">
+            <div class="col-sm-8">
               <div class="form-group">
-                <label class="control-label col-sm-4">{{ form.description.label }}</label>
-                <div class="col-sm-8">
+                <label class="control-label col-sm-3">{{ form.description.label }}</label>
+                <div class="col-sm-9">
                   {{ form.description(class="form-control", rows="12") }}
                 </div>
               </div>

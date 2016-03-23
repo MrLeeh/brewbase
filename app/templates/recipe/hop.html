@@ -91,9 +91,9 @@
 <table class="hop-table table">
   <tr>
     <th class="col-sm-4"><label>Hopfen</label></th>
-    <th class="col-sm-2"><label>&alpha;-Säure</label></th>
-    <th class="col-sm-2"><label>Menge</label></th>
-    <th class="col-sm-2"><label>Kochzeit</label></th>
+    <th class="col-sm-1"><label>&alpha;-Säure</label></th>
+    <th class="col-sm-1"><label>Menge</label></th>
+    <th class="col-sm-1"><label>Kochzeit</label></th>
     <th class="col-sm-1 centered"><a id="add-hop" class="btn btn-xs" href="#"><span class="glyphicon glyphicon-plus"></span></a></th>
   </tr>
   {% for hop in form.hops %}
@@ -115,15 +115,15 @@
       {{ hop.comment(class="hop-comment-dummy") }}
     </td>
     <!-- hop alhpa acid -->
-    <td class="col-sm-2">
+    <td class="col-sm-1">
       {{ edit_field(hop.alpha_acid, "%", class="form-control centered hop-alpha-acid") }}
     </td>
     <!-- hop quantity -->
-    <td class="col-sm-2">
+    <td class="col-sm-1">
       {{ edit_field(hop.qty, "g", class="form-control centered hop-qty")}}
     </td>
     <!-- hop cooking time -->
-    <td class="col-sm-2">
+    <td class="col-sm-1">
       {{ edit_field(hop.cooking_time, "min", class="form-control centered hop-cooking-time")}}
     </td>
     <!-- delete button -->

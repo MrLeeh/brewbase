@@ -56,8 +56,8 @@
 <table class="malt-table table">
   <tr>
     <th class="col-sm-4"><label>Malzsorte</label></th>
-    <th class="col-sm-2"><label>Menge</label></th>
-    <th class="col-sm-2"><label>Farbe</label></th>
+    <th class="col-sm-1"><label>Menge</label></th>
+    <th class="col-sm-1"><label>Farbe</label></th>
     <th class="col-sm-1 centered"><a id="add-malt" class="btn btn-xs" href="#"><span class="glyphicon glyphicon-plus"></span></a></th>
   </tr>
 
@@ -78,11 +78,11 @@
       </div>
     </td>
     <!-- malt quantity -->
-    <td class="col-sm-2">
+    <td class="col-sm-1">
       {{ edit_field(malt.qty, "kg", class="form-control centered malt-qty") }}
     </td>
     <!-- malt ebc -->
-    <td class="col-sm-2">
+    <td class="col-sm-1">
       {{ edit_field(malt.ebc, "EBC", class="form-control centered malt-ebc") }}
     </td>
     <!-- delete button -->

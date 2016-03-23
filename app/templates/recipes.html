@@ -59,13 +59,13 @@
 
     $(document).ready(function() {
       $('.link-more').click(function() {
-        $(this).closest('table').find('.detail-row').fadeIn();
+        $(this).closest('.recipe-detail').find('.detail-row').fadeIn();
         $('.link-more').hide();
         $('.link-less').show();
       });
 
       $('.link-less').click(function() {
-        $(this).closest('table').find('.detail-row').fadeOut('slow');
+        $(this).closest('.recipe-detail').find('.detail-row').fadeOut('slow');
         $('.link-more').show();
         $('.link-less').hide();
       });
@@ -83,7 +83,7 @@
 {% block content %}
   {% for recipe in recipes %}
     <div class="row">
-      <div class="recipe-detail col-sm-offset-2 col-sm-8">
+      <div class="recipe-detail col-sm-offset-1 col-sm-10">
         <div class="panel panel-primary">
           <div class="panel-heading">
             <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="panel-heading">
@@ -100,7 +100,7 @@
             </div>
           </div>
 
-          <div class="panel-body">
+          <div class="panel-body recipe-detail">
             <div class="col-sm-6">
               <table class="table">
                 <tr>
@@ -116,20 +116,16 @@
                   <td>{{ recipe.alcohol or '-'}} %<sub>vol</sub></td>
                 </tr>
                 <tr class="detail-row">
-                  <td>Bitterkeit</td>
+                  <td><label>Bitterkeit</label></td>
                   <td>{{ recipe.bitterness or '-' }} IBU</td>
                 </tr>
                 <tr class="detail-row">
-                  <td>Farbe</td>
+                  <td><label>Farbe</label></td>
                   <td>{{ recipe.color or '-'}} EBC</td>
                 </tr>
                 <tr class="detail-row">
-                  <td>Karbonisierung</td>
+                  <td><label>Karbonisierung</label></td>
                   <td>{{ recipe.carbonisation }} g/l</td>
-                </tr>
-                <tr class="detail-row">
-                  <td>Maischen:</td>
-                  <td>{{ recipe.mash | length() }} Rasten, {{ "%.0f" | format(recipe.mash | sum("duration")) }} Minuten</td>
                 </tr>
                 <tr>
                   <td>
@@ -143,16 +139,20 @@
             <div class="col-sm-6">
               <table class="table">
                 <tr>
-                  <td>Malz:</td>
+                  <td><label>Malz</label></td>
                   <td>{{ recipe.malts|join(', ', attribute='name_') }}</td>
                 </tr>
                 <tr>
-                  <td>Hopfen:</td>
+                  <td><label>Hopfen</label></td>
                   <td>{{ recipe.hops|join(', ', attribute='name_') }}</td>
                 </tr>
                 <tr>
-                  <td>Sonstige Zutaten:</td>
+                  <td><label>Sonstige Zutaten</label></td>
                   <td>{{ recipe.miscs|join(', ', attribute='name_') }}</td>
+                </tr>
+                <tr class="detail-row">
+                  <td><label>Maischen</label></td>
+                  <td>{{ recipe.mash | length() }} Rasten, {{ "%.0f" | format(recipe.mash | sum("duration")) }} Minuten</td>
                 </tr>
               </table>
             </div>
