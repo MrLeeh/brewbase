@@ -97,7 +97,11 @@
     <td class="col-sm-1 centered">
       <a class="btn btn-link delete-mash"><span class="glyphicon glyphicon-trash"></span></a>
     </td>
-
   </tr>
   {% endfor %}
+  <tr class="mash-sumary">
+    <td style="text-align: right"><b>Gesamt:</b></td>
+    <td></td>
+    <td style="text-align: center"><b>{{ "%.0f" | format(recipe.mash | sum('duration')) }} Min.</b></td>
+  </tr>
 </table>
