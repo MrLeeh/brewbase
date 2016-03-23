@@ -17,6 +17,11 @@
   .link-less {
     display: none;
   }
+
+  .header {
+    font-style: italic;
+  }
+
 </style>
 {% endblock %}
 
@@ -96,43 +101,35 @@
           </div>
 
           <div class="panel-body">
-            <div class="col-sm-8">
+            <div class="col-sm-6">
               <table class="table">
                 <tr>
-                  <td>Biersorte:</td>
+                  <td><label>Biersorte</label></td>
                   <td>{{ recipe.beertype }}</td>
                 </tr>
                 <tr>
-                  <td>Stammwürze:</td>
+                  <td><label>Stammwürze</label></td>
                   <td>{{ recipe.original_gravity }} °Pl</td>
                 </tr>
                 <tr>
-                  <td>Alkoholgehalt:</td>
+                  <td><label>Alkoholgehalt</label></td>
                   <td>{{ recipe.alcohol or '-'}} %<sub>vol</sub></td>
                 </tr>
                 <tr class="detail-row">
-                  <td>Bitterkeit:</td>
+                  <td>Bitterkeit</td>
                   <td>{{ recipe.bitterness or '-' }} IBU</td>
                 </tr>
                 <tr class="detail-row">
-                  <td>Farbe:</td>
+                  <td>Farbe</td>
                   <td>{{ recipe.color or '-'}} EBC</td>
                 </tr>
                 <tr class="detail-row">
-                  <td>Karbonisierung:</td>
+                  <td>Karbonisierung</td>
                   <td>{{ recipe.carbonisation }} g/l</td>
                 </tr>
                 <tr class="detail-row">
-                  <td>Malz:</td>
-                  <td>{{ recipe.malts|join(', ', attribute='name_') }}</td>
-                </tr>
-                <tr class="detail-row">
-                  <td>Hopfen:</td>
-                  <td>{{ recipe.hops|join(', ', attribute='name_') }}</td>
-                </tr>
-                <tr class="detail-row">
-                  <td>Sonstiges:</td>
-                  <td>{{ recipe.miscs|join(', ', attribute='name_') }}</td>
+                  <td>Maischen:</td>
+                  <td>{{ recipe.mash | length() }} Rasten, {{ "%.0f" | format(recipe.mash | sum("duration")) }} Minuten</td>
                 </tr>
                 <tr>
                   <td>
@@ -140,6 +137,22 @@
                     <a class="link-less" href="#">weniger</a>
                   </td>
                   <td></td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-sm-6">
+              <table class="table">
+                <tr>
+                  <td>Malz:</td>
+                  <td>{{ recipe.malts|join(', ', attribute='name_') }}</td>
+                </tr>
+                <tr>
+                  <td>Hopfen:</td>
+                  <td>{{ recipe.hops|join(', ', attribute='name_') }}</td>
+                </tr>
+                <tr>
+                  <td>Sonstige Zutaten:</td>
+                  <td>{{ recipe.miscs|join(', ', attribute='name_') }}</td>
                 </tr>
               </table>
             </div>
