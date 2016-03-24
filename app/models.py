@@ -66,7 +66,7 @@ class RecipeHop(db.Model):
     alpha_acid = Column(Float(precision=1))
     aroma = Column(Float(precision=1))
     cooking_time = Column(Float())
-    comment = Column(Text)
+    comment = Column(Text, default='')
 
 
 class RecipeMalt(db.Model):
@@ -77,7 +77,7 @@ class RecipeMalt(db.Model):
     name_ = Column(String(80))
     qty = Column(Float(precision=1))
     ebc = Column(Float())
-    comment = Column(Text)
+    comment = Column(Text, default='')
 
 
 class RecipeMisc(db.Model):
@@ -87,7 +87,7 @@ class RecipeMisc(db.Model):
     recipe = relationship('Recipe', backref=backref('miscs', order_by=id))
     name_ = Column(String(80))
     qty = Column(Float(precision=0))
-    comment = Column(Text)
+    comment = Column(Text, default='')
 
 
 class RecipeMash(db.Model):
@@ -96,9 +96,9 @@ class RecipeMash(db.Model):
     recipe_id = Column(Integer, ForeignKey('recipes.id'))
     recipe = relationship('Recipe', backref=backref('mash', order_by=id))
     name_ = Column(String(80))
-    duration = Column(Float(precision=0))
+    duration = Column(Float(precision=0), default=0)
     temperature = Column(Float(precision=0))
-    comment = Column(Text)
+    comment = Column(Text, default='')
 
 
 class Malt(db.Model):

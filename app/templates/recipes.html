@@ -58,16 +58,11 @@
     });
 
     $(document).ready(function() {
-      $('.link-more').click(function() {
-        $(this).closest('.recipe-detail').find('.detail-row').fadeIn();
-        $('.link-more').hide();
-        $('.link-less').show();
-      });
-
-      $('.link-less').click(function() {
-        $(this).closest('.recipe-detail').find('.detail-row').fadeOut('slow');
-        $('.link-more').show();
-        $('.link-less').hide();
+      $('[class^="link-"]').click(function() {
+        $row = $(this).closest('.recipe-detail');        ;
+        $row.find('.detail-row').toggle();
+        $row.find('.link-more').toggle();
+        $row.find('.link-less').toggle();
       });
     });
   });
@@ -121,7 +116,7 @@
                 </tr>
                 <tr class="detail-row">
                   <td><label>Farbe</label></td>
-                  <td>{{ recipe.color or '-'}} EBC</td>
+                  <td>{% if recipe.ebc is none %}-{% else %}{{ "%.0f EBC" | format(recipe.ebc) }}{% endif %}</td>
                 </tr>
                 <tr class="detail-row">
                   <td><label>Karbonisierung</label></td>

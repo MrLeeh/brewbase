@@ -104,9 +104,9 @@
         {{ edit_field(hop.name_, "", class="form-control hop-name") }}
         <div class="input-group-btn">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-          <ul class="dropdown-menu scrollable-menu" role="menu">
+          <ul class="dropdown-menu scrollable-menu pull-right" role="menu">
             {% for hop in hoplist %}
-              <li><a href="#" class="hop-template" data-alpha-acid="{{ hop.alpha_acid }}" data-comment="{{ hop.comment }}">{{ hop.name }}</a></li>
+              <li><a href="#" class="hop-template" data-alpha-acid="{{ hop.alpha_acid }}" data-comment="{{ hop.comment }}">{{ hop.name }} ({{hop.comment}})</a></li>
             {% endfor %}
           </ul>
         </div>
