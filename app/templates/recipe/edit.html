@@ -17,6 +17,20 @@
 {% endblock %}
 
 {% block scripts %}
+  <script>
+    $('document').ready(function() {
+      $('.custom-dropdown').click(function() {
+        $inputgroup = $(this).closest('.input-group');
+        $dropdown = $(this).next('ul');
+        $dropdown.css('width', $inputgroup.css('width'));
+        $dropdown.toggle();
+      });
+
+      $('.flexible-menu a').click(function() {
+        $(this).closest('.flexible-menu').hide();
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block content %}

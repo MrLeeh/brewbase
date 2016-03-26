@@ -57,7 +57,7 @@
 
     $('.hop-template').click(function() {
       $row = $(this).closest('tr');
-      $row.find('.hop-name').val($(this).text());
+      $row.find('.hop-name').val($(this).data('hop-name'));
       $row.find('.hop-alpha-acid').val($(this).data('alpha-acid'));
       $row.find('.hop-comment').text($(this).data('comment'));
       $row.find('.hop-comment-dummy').text($(this).data('comment'));
@@ -103,10 +103,10 @@
       <div class="input-group">
         {{ edit_field(hop.name_, "", class="form-control hop-name") }}
         <div class="input-group-btn">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-          <ul class="dropdown-menu scrollable-menu pull-right" role="menu">
+          <button type="button" class="btn btn-default custom-dropdown"><span class="caret"></span></button>
+          <ul class="dropdown-menu scrollable-menu pull-right flexible-menu" role="menu">
             {% for hop in hoplist %}
-              <li><a href="#" class="hop-template" data-alpha-acid="{{ hop.alpha_acid }}" data-comment="{{ hop.comment }}">{{ hop.name }} ({{hop.comment}})</a></li>
+              <li><a href="#" class="hop-template" data-hop-name="{{ hop.name }}" data-alpha-acid="{{ hop.alpha_acid }}" data-comment="{{ hop.comment }}">{{ hop.name }} ({{hop.comment}})</a></li>
             {% endfor %}
           </ul>
         </div>

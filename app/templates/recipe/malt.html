@@ -1,5 +1,13 @@
 {% from "common.html" import edit_field %}
 
+<style>
+
+  .flexible-menu {
+    min-width: 0;
+  }
+
+</style>
+
 <script>
   $(document).ready(function() {
     $('.delete-malt').click(function() {
@@ -68,8 +76,8 @@
       <div class="input-group">
         {{ edit_field(malt.name_, "", class="form-control malt-name") }}
         <div class="input-group-btn">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-          <ul class="dropdown-menu scrollable-menu pull-right" role="menu">
+          <button type="button" class="btn btn-default custom-dropdown"><span class="caret"></span></button>
+          <ul class="dropdown-menu scrollable-menu pull-right flexible-menu" role="menu">
             {% for malt in maltlist %}
               <li><a href="#" class="malt-template" data-ebc="{{ malt.ebc }}">{{ malt.name }}</a></li>
             {% endfor %}
