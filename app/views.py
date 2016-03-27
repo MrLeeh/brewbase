@@ -87,13 +87,46 @@ def edit_recipe(recipe_id):
 @app.route('/recipes/<int:recipe_id>/delete/', methods=['DELETE'])
 def delete_recipe(recipe_id):
     recipe = db.session.query(Recipe).get(recipe_id)
+
     if recipe is None:
         resp = jsonify({'status': 'Not found'})
         resp.status = 404
         return resp
+
     db.session.delete(recipe)
     db.session.commit()
     return jsonify({'status': 'OK'})
+
+
+@app.route('/recipes/<int:recipe_id>/copy/<string:new_recipe_name>')
+def copy_recipe(recipe_id, new_recipe_name):
+    recipe = Recipe.query.get(recipe_id)
+    new_recipe = recipe.copy()
+    new_recipe.name = new_recipe_name
+
+    # copy malts
+    for malt in recipe.malts:
+        new_malt = malt.copy()
+        new_malt.recipe = new_recipe
+
+    # copy hops
+    for hop in recipe.hops:
+        new_hop = hop.copy()
+        new_hop.recipe = new_recipe
+
+    # copy miscs
+    for misc in recipe.miscs:
+        new_misc = misc.copy()
+        new_misc.recipe = new_recipe
+
+    # copy mash steps
+    for mash in recipe.mash:
+        new_mash = mash.copy()
+        new_mash.recipe = new_recipe
+
+    db.session.add(new_recipe)
+    db.session.commit()
+    return redirect(url_for('recipe_list'))
 
 
 @app.route('/recipes/<int:recipe_id>/')

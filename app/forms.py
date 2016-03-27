@@ -10,7 +10,7 @@ from flask.ext.wtf import Form
 from wtforms import FieldList, ValidationError
 from wtforms import Form as NoCsrfForm
 from wtforms.fields import TextField, DecimalField, IntegerField, \
-    TextAreaField, FormField, SelectField
+    TextAreaField, FormField, DateField
 from wtforms.validators import Length, Optional, Required
 
 
@@ -54,6 +54,7 @@ class MashForm(NoCsrfForm):
 class RecipeForm(Form):
     # date = DateField('Datum:', [Required()], format='%d.%m.%Y')
     name = TextField('Name:', [Length(max=255)])
+    date = DateField('Datum:', format='%d.%m.%Y')
     description = TextAreaField('Beschreibung:')
     beertype = TextField('Biersorte:', [Length(max=255)])
     original_gravity = DecimalField('Stammwürze:', places=1)

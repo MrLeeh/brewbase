@@ -39,9 +39,12 @@
     {{ form.csrf_token }}
     <div class="container-fluid col-sm-10 col-sm-offset-1">
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-8">
           {{ labeled_edit_field(form.name) }}
           {{ labeled_edit_field(form.beertype) }}
+        </div>
+        <div class="col-sm-4">
+          {{ labeled_edit_field(form.date) }}
         </div>
       </div>
       <div class="row">
@@ -49,6 +52,7 @@
           <li class="active"><a data-toggle="tab" href="#recipe-datasheet">Datenblatt</a></li>
           <li><a data-toggle="tab" href="#recipe-malt">Malz</a></li>
           <li><a data-toggle="tab" href="#recipe-hop">Hopfen</a></li>
+          <li><a data-toggle="tab" href="#recipe-misc">Sonstige Zutaten</a></li>
           <li><a data-toggle="tab" href="#recipe-mash">Maischen</a></li>
           <li><a data-toggle="tab" href="#">Würzekochen</a></li>
         </ul>
@@ -87,6 +91,14 @@
         <div class="row">
           <div class="panel-group">
             {% include "recipe/hop.html" %}
+          </div>
+        </div>
+      </div>
+
+      <div id="recipe-misc" class="tab-pane fade in inactive">
+        <div class="row">
+          <div class="panel-group">
+            {% include "recipe/misc.html" %}
           </div>
         </div>
       </div>

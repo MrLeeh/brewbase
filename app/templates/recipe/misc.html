@@ -1,0 +1,113 @@
+{% from "common.html" import edit_field, labeled_edit_field %}
+
+<style>
+  .panel-dropdown-btn {
+    color: white;
+  }
+  .flexible-menu {
+    min-width: 0;
+  }
+</style>
+
+<script>
+  jQuery.fn.extend({
+    id_name: function set_id_name(value) {
+      console.log($(this));
+      $(this).attr('id', value).attr('name', value);
+      return $(this);
+    }
+  });
+
+  $(document).ready(function() {
+    $('.add-misc-btn').click(function() {
+      var $last_misc_panel = $('div.misc-entry').last();
+      var $new_misc_panel = $last_misc_panel.clone(true, true)
+        .insertAfter($last_misc_panel);
+      var new_num = $last_misc_panel.data('index') + 1;
+
+      // panel
+      $new_misc_panel.data('index', new_num)
+        .id_name('miscs-panel-' + new_num)
+        .find('.panel-heading').text('Zutat ' + (new_num + 1));
+
+      // name
+      $new_misc_panel.find('input.misc-name')
+        .id_name('miscs-' + new_num + '-name_')
+        .val('');
+
+      // qty
+      $new_misc_panel.find('input.misc-qty')
+        .id_name('miscs-' + new_num + '-qty')
+        .val('');
+
+      // comment
+      $new_misc_panel.find('input.misc-comment')
+        .id_name('miscs-' + new_num + '-comment')
+        .val('');
+    });
+
+    $('.delete-misc-btn').click(function() {
+      if ($('.misc-entry').length == 1) {
+        $('.misc-entry input').val('');
+      }
+      else {
+        $(this).closest('.misc-entry').remove();
+      }
+    });
+
+    $('#main-form').submit(function(event) {
+      $('.misc-entry').each(function(index, item) {
+        values = [
+          $(item).find('.misc-name').first().val(),
+          $(item).find('.misc-qty').first().val(),
+          $(item).find('.misc-comment').first().val()
+        ];
+        if(values.every(function(val) {
+          return val == '';
+        }))
+        {
+          $(item).remove();
+        }
+      });
+    });
+
+    $('.misc-entry').hover(function() {
+      $('.misc-entry').removeClass('panel-primary');
+      $(this).addClass('panel-primary');
+    });
+  });
+</script>
+
+{% for misc in form.miscs %}
+<div id="miscs-panel-{{ loop.index0 }}" class="panel panel-default misc-entry" data-index={{ loop.index0 }}>
+  <div class="panel-heading">
+    Zutat {{ loop.index }}
+    <div class="dropdown pull-right">
+      <a class="btn btn-xs" type="button" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-option-vertical"></span></a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a class="add-misc-btn" href="#">Hinzufügen</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a class="delete-misc-btn" href="#">Entfernen</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-8">
+        <label class="control-label">{{ misc.name_.label }}</label>
+        {{ misc.name_(class="form-control misc-name") }}
+      </div>
+      <div class="col-sm-4">
+        <label class="control-label">{{ misc.qty.label }}</label>
+        {{ edit_field(misc.qty, "g", class="form-control misc-qty") }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <label class="control-label">{{ misc.comment.label }}</label>
+        {{ misc.comment(class="form-control misc-comment") }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}

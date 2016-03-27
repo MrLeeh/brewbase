@@ -57,13 +57,28 @@
       modal.find('#modalOk').attr("data-delete-url", url);
     });
 
-    $(document).ready(function() {
-      $('[class^="link-"]').click(function() {
-        $row = $(this).closest('.recipe-detail');        ;
-        $row.find('.detail-row').toggle();
-        $row.find('.link-more').toggle();
-        $row.find('.link-less').toggle();
-      });
+    $('[class^="link-"]').click(function() {
+      $row = $(this).closest('.recipe-detail');        ;
+      $row.find('.detail-row').toggle();
+      $row.find('.link-more').toggle();
+      $row.find('.link-less').toggle();
+    });
+
+    $('#copyModal').on('show.bs.modal', function(event) {
+      $modal = $(this)
+      $button = $(event.relatedTarget);
+      recipe_id = $button.data('recipe-id');
+      recipe_name = $button.data('recipe-name');
+
+      $modal.find('.modal-text').text('Das Rezept ' + recipe_name + " kopieren und unter folgendem Namen speichern?");
+      $modal.find('input').val(recipe_name + " 2");
+      $modal.find('.copy-modal-ok').attr('data-recipe-id', recipe_id);
+    });
+
+    $('#copyModal .modal-ok').click(function() {
+      $modal = $(this).closest('#copyModal');
+      recipe_name = $modal.find('input').val();
+      window.location.replace("/recipes/" + recipe_id + "/copy/" + recipe_name);
     });
   });
 </script>
@@ -88,7 +103,8 @@
             <div class="dropdown pull-right">
               <a class="btn btn-primary btn-xs" data-toggle="dropdown" expanded="false"><span class="glyphicon glyphicon-menu-down"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">Bearbeiten</a></li>
+                <li><a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}"><b>Bearbeiten</b></a></li>
+                <li><a href="#" class="copy-link" data-toggle="modal" data-target="#copyModal" data-recipe-id="{{ recipe.id }}" data-recipe-name="{{ recipe.name }}">Kopieren</a>
                 <li role="separator" class="divider"></li>
                 <li><a class="recipe-delete-link" href="#" data-toggle="modal" data-target="#myModal" data-recipe-name="{{ recipe.name }}" data-delete-url="{{ url_for('delete_recipe', recipe_id=recipe.id) }}">Löschen</a></li>
               </ul>
@@ -172,6 +188,29 @@
         </div>
       </div>
     </div>
-</div>
+  </div>
+
+  <div class="modal fade" id="copyModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Rezept kopieren</h4>
+        </div>
+        <div class="modal-body" id="myModalBody">
+          <div class="modal-text"></div>
+          <div class="form-group">
+            <input class="modal-name-input form-control" type="text">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-primary modal-ok" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 {% endblock %}

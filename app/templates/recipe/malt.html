@@ -1,11 +1,9 @@
 {% from "common.html" import edit_field %}
 
 <style>
-
   .flexible-menu {
     min-width: 0;
   }
-
 </style>
 
 <script>
@@ -102,7 +100,7 @@
   <tr class="malt-sumary">
     <td style="text-align: right;"><b>Gesamt:</b></td>
     <td style="text-align: center;">
-      <b>{{ recipe.malt_qty or "-" }} kg</b>
+      <b>{{ "%.2f kg" | format(recipe.malt_qty) or "-" }}</b>
     </td>
     <td style="text-align: center;">
       <b>{% if recipe.ebc is none %}-{% else %}{{ "%.0f" | format(recipe.ebc) }}{% endif %} EBC</b>

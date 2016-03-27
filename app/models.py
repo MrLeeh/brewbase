@@ -31,6 +31,14 @@ class Recipe(db.Model):
             .format(self=self)
         )
 
+    def copy(self):
+        attributes = ['description', 'name', 'beertype', 'original_gravity',
+                      'alcohol', 'bitterness', 'color', 'carbonisation']
+        recipe = Recipe()
+        for attr in attributes:
+            setattr(recipe, attr, getattr(self, attr))
+        return recipe
+
     @property
     def ebc(self):
         """
@@ -60,7 +68,10 @@ class RecipeHop(db.Model):
 
     id = Column(Integer, primary_key=True)
     recipe_id = Column(Integer, ForeignKey('recipes.id'))
-    recipe = relationship('Recipe', backref=backref('hops', order_by=id))
+    recipe = relationship(
+        'Recipe', backref=backref('hops', order_by=id,
+                                  cascade='save-update, delete')
+    )
     name_ = Column(String(80))
     qty = Column(Float(precision=0))
     alpha_acid = Column(Float(precision=1))
@@ -68,37 +79,74 @@ class RecipeHop(db.Model):
     cooking_time = Column(Float())
     comment = Column(Text, default='')
 
+    def copy(self):
+        attributes = ['name_', 'qty', 'alpha_acid', 'aroma', 'cooking_time', 'comment']
+        new_hop = RecipeHop()
+        for attr in attributes:
+            setattr(new_hop, attr, getattr(self, attr))
+        return new_hop
+
 
 class RecipeMalt(db.Model):
     __tablename__ = 'recipe_malts'
     id = Column(Integer, primary_key=True)
     recipe_id = Column(Integer, ForeignKey('recipes.id'))
-    recipe = relationship('Recipe', backref=backref('malts', order_by=id))
+    recipe = relationship(
+        'Recipe', backref=backref('malts', order_by=id,
+                                  cascade='save-update, delete')
+    )
     name_ = Column(String(80))
     qty = Column(Float(precision=1))
     ebc = Column(Float())
     comment = Column(Text, default='')
+
+    def copy(self):
+        attributes = ['name_', 'qty', 'ebc', 'comment']
+        new_malt = RecipeMalt()
+        for attr in attributes:
+            setattr(new_malt, attr, getattr(self, attr))
+        return new_malt
 
 
 class RecipeMisc(db.Model):
     __tablename__ = 'recipe_miscs'
     id = Column(Integer, primary_key=True)
     recipe_id = Column(Integer, ForeignKey('recipes.id'))
-    recipe = relationship('Recipe', backref=backref('miscs', order_by=id))
+    recipe = relationship(
+        'Recipe', backref=backref('miscs', order_by=id,
+                                  cascade='save-update, delete')
+    )
     name_ = Column(String(80))
     qty = Column(Float(precision=0))
     comment = Column(Text, default='')
+
+    def copy(self):
+        attributes = ['name_', 'qty', 'comment']
+        new_misc = RecipeMisc()
+        for attr in attributes:
+            setattr(new_misc, attr, getattr(self, attr))
+        return new_misc
 
 
 class RecipeMash(db.Model):
     __tablename__ = 'recipe_mash'
     id = Column(Integer, primary_key=True)
     recipe_id = Column(Integer, ForeignKey('recipes.id'))
-    recipe = relationship('Recipe', backref=backref('mash', order_by=id))
+    recipe = relationship(
+        'Recipe', backref=backref('mash', order_by=id,
+                                  cascade='save-update, delete')
+    )
     name_ = Column(String(80))
     duration = Column(Float(precision=0), default=0)
     temperature = Column(Float(precision=0))
     comment = Column(Text, default='')
+
+    def copy(self):
+        attributes = ['name_', 'duration', 'temperature', 'comment']
+        new_mash = RecipeMash()
+        for attr in attributes:
+            setattr(new_mash, attr, getattr(self, attr))
+        return new_mash
 
 
 class Malt(db.Model):
